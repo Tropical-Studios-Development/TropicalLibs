@@ -19,8 +19,6 @@ public class PluginUtil {
 
             // Set your custom prefix
             customPrefixField.set(null, prefix);
-
-            Bukkit.getLogger().info("Custom prefix set successfully!");
         } catch (Exception e) {
             Bukkit.getLogger().severe("Failed to set custom prefix: " + e.getMessage());
         }

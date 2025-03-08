@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 
 public class ChatUtil {
 
-    public static String customPrefix = "";
+    private static String customPrefix = "";
 
     public ChatUtil(String customPrefix) {
         ChatUtil.customPrefix = customPrefix;
