@@ -7,29 +7,27 @@ import java.lang.reflect.Field;
 
 public class PluginUtil {
 
-    public static Plugin getPlugin() {
+    public static Plugin getCallingPlugin() {
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-        Plugin callingPlugin = null;
-
-        for (StackTraceElement element : stackTrace) {
+        // Start at index 2 to skip getCallingPlugin and getStackTrace methods
+        for (int i = 2; i < stackTrace.length; i++) {
+            String className = stackTrace[i].getClassName();
             try {
-                Class<?> clazz = Class.forName(element.getClassName());
+                Class<?> clazz = Class.forName(className);
                 ClassLoader classLoader = clazz.getClassLoader();
 
+                // Check all loaded plugins
                 for (Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
-                    if (classLoader == plugin.getClass().getClassLoader()) {
-                        callingPlugin = plugin;
-                        break;
+                    if (plugin.getClass().getClassLoader() == classLoader) {
+                        return plugin;
                     }
                 }
-
-                if (callingPlugin != null) break;
             } catch (ClassNotFoundException e) {
-                // Ignore
+                // Skip if class can't be found
+                continue;
             }
         }
-
-        return callingPlugin;
+        return null; // Return null if no plugin found
     }
 
     public static void setPluginPrefix(String prefix) {

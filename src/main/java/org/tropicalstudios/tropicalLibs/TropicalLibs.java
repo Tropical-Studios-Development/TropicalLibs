@@ -10,7 +10,7 @@ public final class TropicalLibs extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        plugin = PluginUtil.getPlugin();
+        plugin = PluginUtil.getCallingPlugin();
     }
 
     @Override
