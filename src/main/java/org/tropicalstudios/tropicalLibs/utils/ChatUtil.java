@@ -1,5 +1,7 @@
 package org.tropicalstudios.tropicalLibs.utils;
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -70,6 +72,21 @@ public class ChatUtil {
     public static void executeConsoleCommand(String command) {
         ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
         Bukkit.dispatchCommand(console, command);
+    }
+
+    // Send action-bar message to player
+    public static void sendActionBarMessage(Player player, String message) {
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacy(ChatUtil.c(message)));
+    }
+
+    // Send title to player with predefined timings
+    public static void sendTitle(Player player, String title, String subtitle) {
+        player.sendTitle(ChatUtil.c(title), ChatUtil.c(subtitle), 10, 40, 10);
+    }
+
+    // Send title to player with custom timings
+    public static void sendTitle(Player player, String title, String subtitle, int i1, int i2, int i3) {
+        player.sendTitle(ChatUtil.c(title), ChatUtil.c(subtitle), i1, i2, i3);
     }
 
     // Send toast to player

@@ -9,13 +9,10 @@ public final class TropicalLibs extends JavaPlugin {
     @Override
     public void onEnable() {
         INSTANCE = this;
-        getLogger().info("TropicalLibs has been enabled");
     }
 
     @Override
-    public void onDisable() {
-        getLogger().info("TropicalLibs has been disabled");
-    }
+    public void onDisable() {}
 
     public static TropicalLibs getINSTANCE() {
         return INSTANCE;

@@ -12,6 +12,12 @@ public class Messenger {
             player.sendMessage(ChatUtil.c("%prefix% " + message));
     }
 
+    public static void broadcastPermission(Player player, String permission, String message) {
+        for (Player p : PlayerUtil.getOnlinePlayers())
+            if (p.hasPermission(permission))
+                p.sendMessage(ChatUtil.c("%prefix%" + message));
+    }
+
     public static void info(String message) {
         Bukkit.getLogger().info(ChatUtil.c(message));
     }
