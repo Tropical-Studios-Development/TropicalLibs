@@ -12,7 +12,9 @@ public final class TropicalLibs extends JavaPlugin {
     }
 
     @Override
-    public void onDisable() {}
+    public void onDisable() {
+        INSTANCE = null;
+    }
 
     public static TropicalLibs getINSTANCE() {
         return INSTANCE;
