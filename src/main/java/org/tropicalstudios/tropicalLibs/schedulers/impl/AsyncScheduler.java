@@ -12,19 +12,19 @@ import java.util.concurrent.CompletableFuture;
 public class AsyncScheduler implements TropicalScheduler {
 
     @Override
-    public void run(Runnable r, Plugin plugin) {
-        BukkitTask task = Bukkit.getScheduler().runTaskAsynchronously(plugin, r);
+    public void run(Runnable r) {
+        BukkitTask task = Bukkit.getScheduler().runTaskAsynchronously(TropicalLibs.getPlugin(), r);
     }
 
     @Override
-    public TaskHandle runLater(Runnable r, Plugin plugin, long l) {
-        BukkitTask task = Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, r, l);
+    public TaskHandle runLater(Runnable r, long l) {
+        BukkitTask task = Bukkit.getScheduler().runTaskLaterAsynchronously(TropicalLibs.getPlugin(), r, l);
         return task::cancel;
     }
 
     @Override
-    public TaskHandle runRepeating(Runnable r, Plugin plugin,long d, long l) {
-        BukkitTask task = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, r, d, l);
+    public TaskHandle runRepeating(Runnable r, long d, long l) {
+        BukkitTask task = Bukkit.getScheduler().runTaskTimerAsynchronously(TropicalLibs.getPlugin(), r, d, l);
         return task::cancel;
     }
 }

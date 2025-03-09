@@ -10,19 +10,19 @@ import org.tropicalstudios.tropicalLibs.schedulers.TropicalScheduler;
 public class SyncScheduler implements TropicalScheduler {
 
     @Override
-    public void run(Runnable r, Plugin plugin) {
-        Bukkit.getScheduler().runTask(plugin, r);
+    public void run(Runnable r) {
+        Bukkit.getScheduler().runTask(TropicalLibs.getPlugin(), r);
     }
 
     @Override
-    public TaskHandle runLater(Runnable r, Plugin plugin,long l) {
-        BukkitTask task = Bukkit.getScheduler().runTaskLater(plugin, r, l);
+    public TaskHandle runLater(Runnable r, long l) {
+        BukkitTask task = Bukkit.getScheduler().runTaskLater(TropicalLibs.getPlugin(), r, l);
         return task::cancel;
     }
 
     @Override
-    public TaskHandle runRepeating(Runnable r, Plugin plugin, long d, long l) {
-        BukkitTask task = Bukkit.getScheduler().runTaskTimer(plugin, r, d, l);
+    public TaskHandle runRepeating(Runnable r, long d, long l) {
+        BukkitTask task = Bukkit.getScheduler().runTaskTimer(TropicalLibs.getPlugin(), r, d, l);
         return task::cancel;
     }
 }

@@ -16,9 +16,9 @@ public interface TropicalScheduler {
         return new SyncScheduler();
     }
 
-    void run(Runnable r, Plugin plugin);
+    void run(Runnable r);
 
-    TaskHandle runLater(Runnable r, Plugin plugin, long l);
+    TaskHandle runLater(Runnable r, long l);
 
-    TaskHandle runRepeating(Runnable r, Plugin plugin, long d, long l);
+    TaskHandle runRepeating(Runnable r, long d, long l);
 }
