@@ -12,6 +12,11 @@ public class Messenger {
             player.sendMessage(ChatUtil.c("%prefix% " + message));
     }
 
+    public static void broadcastWithoutPrefix(String message) {
+        for (Player player : PlayerUtil.getOnlinePlayers())
+            player.sendMessage(ChatUtil.c(message));
+    }
+
     public static void broadcastPermission(Player player, String permission, String message) {
         for (Player p : PlayerUtil.getOnlinePlayers())
             if (p.hasPermission(permission))
