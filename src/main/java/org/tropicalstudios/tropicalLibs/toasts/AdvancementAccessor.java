@@ -30,7 +30,7 @@ public class AdvancementAccessor {
         TropicalScheduler.sync().runLater(() -> {
             this.revokeAdvancement(player);
             this.removeAdvancement();
-        }, TropicalLibs.getPlugin(),10);
+        }, 10);
     }
 
     private void loadAdvancement() {
