@@ -20,5 +20,5 @@ public interface TropicalScheduler {
 
     TaskHandle runLater(Runnable r, long l);
 
-    TaskHandle runRepeating(Runnable r, long d, long l);
+    TaskHandle runRepeating(Runnable r, Plugin plugin,long d, long l);
 }

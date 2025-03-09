@@ -23,8 +23,8 @@ public class AsyncScheduler implements TropicalScheduler {
     }
 
     @Override
-    public TaskHandle runRepeating(Runnable r, long d, long l) {
-        BukkitTask task = Bukkit.getScheduler().runTaskTimerAsynchronously(TropicalLibs.getPlugin(), r, d, l);
+    public TaskHandle runRepeating(Runnable r, Plugin plugin,long d, long l) {
+        BukkitTask task = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, r, d, l);
         return task::cancel;
     }
 }
