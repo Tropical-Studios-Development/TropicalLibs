@@ -2,23 +2,22 @@ package org.tropicalstudios.tropicalLibs;
 
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.tropicalstudios.tropicalLibs.utils.PluginUtil;
 
 public final class TropicalLibs extends JavaPlugin {
 
-    public static Plugin plugin;
+    private static Plugin INSTANCE;
 
-    @Override
-    public void onEnable() {
-        plugin = PluginUtil.getCallingPlugin();
+    public TropicalLibs(Plugin plugin) {
+        TropicalLibs.INSTANCE = plugin;
     }
 
     @Override
-    public void onDisable() {
-        plugin = null;
-    }
+    public void onEnable() {}
 
-    public static Plugin getPlugin() {
-        return plugin;
+    @Override
+    public void onDisable() {}
+
+    public static Plugin getINSTANCE() {
+        return INSTANCE;
     }
 }

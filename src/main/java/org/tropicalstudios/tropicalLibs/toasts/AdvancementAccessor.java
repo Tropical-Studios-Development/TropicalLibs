@@ -13,7 +13,7 @@ import org.tropicalstudios.tropicalLibs.schedulers.TropicalScheduler;
 import java.util.UUID;
 
 public class AdvancementAccessor {
-    private final NamespacedKey key = new NamespacedKey(TropicalLibs.getPlugin(), UUID.randomUUID().toString());
+    private final NamespacedKey key = new NamespacedKey(TropicalLibs.getINSTANCE(), UUID.randomUUID().toString());
     private final String icon;
     private final String message;
     private final ToastStyle toastStyle;
