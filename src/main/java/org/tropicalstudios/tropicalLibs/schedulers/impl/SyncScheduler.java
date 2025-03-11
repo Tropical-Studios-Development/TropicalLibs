@@ -21,8 +21,8 @@ public class SyncScheduler implements TropicalScheduler {
     }
 
     @Override
-    public TaskHandle runRepeating(Runnable r, Plugin plugin,long d, long l) {
-        BukkitTask task = Bukkit.getScheduler().runTaskTimer(plugin, r, d, l);
+    public TaskHandle runRepeating(Runnable r, long d, long l) {
+        BukkitTask task = Bukkit.getScheduler().runTaskTimer(TropicalLibs.getPlugin() ,r, d, l);
         return task::cancel;
     }
 }

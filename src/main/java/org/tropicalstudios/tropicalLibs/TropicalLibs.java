@@ -6,7 +6,7 @@ import org.tropicalstudios.tropicalLibs.utils.PluginUtil;
 
 public final class TropicalLibs extends JavaPlugin {
 
-    private static Plugin plugin;
+    public static Plugin plugin;
 
     @Override
     public void onEnable() {
