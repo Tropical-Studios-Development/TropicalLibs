@@ -68,10 +68,28 @@ public class ChatUtil {
         return result.deleteCharAt(result.length() - 1).toString(); // Remove trailing "-"
     }
 
+    // Execute command as a player
+    public static void executePlayerCommand(Player player, String command) {
+        player.performCommand(command);
+    }
+
+    // Execute multiple commands as a player
+    public static void executePlayerCommand(Player player, List<String> commands) {
+        for (String cmd : commands)
+            player.performCommand(cmd);
+    }
+
     // Execute console command
     public static void executeConsoleCommand(String command) {
         ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
         Bukkit.dispatchCommand(console, command);
+    }
+
+    // Execute multiple console commands
+    public static void executeConsoleCommand(List<String> commands) {
+        ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+        for (String cmd : commands)
+            Bukkit.dispatchCommand(console, cmd);
     }
 
     // Send action-bar message to player
