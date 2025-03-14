@@ -37,23 +37,6 @@ public class ItemUtil {
         }
     }
 
-    // Apply glow effect to item
-    public static ItemStack applyGlowEffectToItem(ItemStack item) {
-        NBT.get(item, nbt -> {
-            if (item.getEnchantments().isEmpty()) {
-                ReadWriteNBT itemGlow = NBT.parseNBT("{Enchantments:[{}]}");
-                ReadWriteNBT existingEnchantments = (ReadWriteNBT) nbt.getCompound("Enchantments");
-
-                if (existingEnchantments != null)
-                    itemGlow.mergeCompound(existingEnchantments);
-
-                existingEnchantments.mergeCompound(itemGlow); // Ensure the changes are applied
-            }
-        });
-        return item;
-    }
-
-
     // Check if an item is a sword
     public static boolean isSword(ItemStack item) {
         return item.getType() == Material.WOODEN_SWORD || item.getType() == Material.STONE_SWORD ||
