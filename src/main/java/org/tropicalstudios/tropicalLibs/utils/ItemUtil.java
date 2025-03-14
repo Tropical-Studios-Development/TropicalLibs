@@ -1,9 +1,56 @@
 package org.tropicalstudios.tropicalLibs.utils;
 
+import com.sk89q.jnbt.NBTUtils;
+import com.sk89q.worldedit.util.formatting.text.NbtComponent;
+import de.tr7zw.changeme.nbtapi.NBT;
+import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
+import de.tr7zw.changeme.nbtapi.iface.ReadableNBT;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class ItemUtil {
+
+    // Apply durability loss according to the number of broken blocks,
+    // Do nothing if the player is in creative
+    public static void applyDurabilityLoss(Player player, ItemStack item) {
+
+        if (player.getGameMode() == GameMode.CREATIVE)
+            return;
+
+        ItemMeta itemMeta = item.getItemMeta();
+        if (itemMeta instanceof Damageable damageable) {
+            int unbreakingLevel = item.getEnchantmentLevel(Enchantment.DURABILITY);
+            if (unbreakingLevel <= 0 || Math.random() < (1.0 / (unbreakingLevel + 1))) {
+                int newDamage = damageable.getDamage() + 1;
+                int maxDurability = item.getType().getMaxDurability();
+                if (newDamage >= maxDurability) {
+                    player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0f, 1.0f);
+                    item.setAmount(0);
+                    return;
+                }
+                damageable.setDamage(newDamage);
+                item.setItemMeta(damageable);
+            }
+        }
+    }
+
+    // Apply glow effect to item
+    public static ItemStack applyGlowEffectToItem(ItemStack item) {
+        NBT.get(item, nbt -> {
+            if (item.getEnchantments().isEmpty()) {
+                ReadWriteNBT itemGlow = NBT.parseNBT("{Enchantments:[{}]}");
+                ReadableNBT existingEnchantments = nbt.getCompound("Enchantments");
+                itemGlow.mergeCompound(existingEnchantments);
+            }
+        });
+        return item;
+    }
 
     // Check if an item is a sword
     public static boolean isSword(ItemStack item) {
