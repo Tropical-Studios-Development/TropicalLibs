@@ -45,4 +45,27 @@ public class BlockUtil {
     public static boolean isOre(Material material) {
         return material.name().endsWith("_ORE") || material == Material.NETHER_QUARTZ_ORE;
     }
+
+    public static boolean isLog(Material material) {
+        return material == Material.OAK_LOG ||
+                material == Material.SPRUCE_LOG ||
+                material == Material.BIRCH_LOG ||
+                material == Material.JUNGLE_LOG ||
+                material == Material.ACACIA_LOG ||
+                material == Material.DARK_OAK_LOG ||
+                material == Material.STRIPPED_OAK_LOG ||
+                material == Material.STRIPPED_SPRUCE_LOG ||
+                material == Material.STRIPPED_BIRCH_LOG ||
+                material == Material.STRIPPED_JUNGLE_LOG ||
+                material == Material.STRIPPED_ACACIA_LOG ||
+                material == Material.STRIPPED_DARK_OAK_LOG ||
+                material == Material.MANGROVE_LOG ||
+                material == Material.STRIPPED_MANGROVE_LOG ||
+                material == Material.CHERRY_LOG ||
+                material == Material.STRIPPED_CHERRY_LOG ||
+                material == Material.CRIMSON_STEM ||
+                material == Material.WARPED_STEM ||
+                material == Material.STRIPPED_CRIMSON_STEM ||
+                material == Material.STRIPPED_WARPED_STEM;
+    }
 }
