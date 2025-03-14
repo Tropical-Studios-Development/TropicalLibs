@@ -37,50 +37,22 @@ public class ItemUtil {
         }
     }
 
-    // Apply durability loss according to the number of blocks broken
-    public static void applyDurabilityLoss(Player player, ItemStack item, int count) {
-        if (player.getGameMode() == GameMode.CREATIVE || count <= 0)
-            return;
-
-        ItemMeta itemMeta = item.getItemMeta();
-        if (!(itemMeta instanceof Damageable damageable))
-            return;
-
-        int unbreakingLevel = item.getEnchantmentLevel(Enchantment.DURABILITY);
-        int damageToApply = 0;
-
-        // Calculate total damage to apply based on count and Unbreaking enchantment
-        for (int i = 0; i < count; i++)
-            if (unbreakingLevel <= 0 || Math.random() < 1.0 / (unbreakingLevel + 1))
-                damageToApply++;
-
-        if (damageToApply <= 0)
-            return;
-
-        int newDamage = damageable.getDamage() + damageToApply;
-        int maxDurability = item.getType().getMaxDurability();
-
-        if (newDamage >= maxDurability) {
-            player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 1.0F);
-            item.setAmount(0);
-            return;
-        }
-
-        damageable.setDamage(newDamage);
-        item.setItemMeta(damageable);
-    }
-
     // Apply glow effect to item
     public static ItemStack applyGlowEffectToItem(ItemStack item) {
         NBT.get(item, nbt -> {
             if (item.getEnchantments().isEmpty()) {
                 ReadWriteNBT itemGlow = NBT.parseNBT("{Enchantments:[{}]}");
-                ReadableNBT existingEnchantments = nbt.getCompound("Enchantments");
-                itemGlow.mergeCompound(existingEnchantments);
+                ReadWriteNBT existingEnchantments = (ReadWriteNBT) nbt.getCompound("Enchantments");
+
+                if (existingEnchantments != null)
+                    itemGlow.mergeCompound(existingEnchantments);
+
+                existingEnchantments.mergeCompound(itemGlow); // Ensure the changes are applied
             }
         });
         return item;
     }
+
 
     // Check if an item is a sword
     public static boolean isSword(ItemStack item) {
