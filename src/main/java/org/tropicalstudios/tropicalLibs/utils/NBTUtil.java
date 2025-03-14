@@ -36,7 +36,7 @@ public class NBTUtil {
     }
 
     public static boolean hasTag(ItemStack item, String tag) {
-        return NBT.get(item, nbt -> (boolean) nbt.getBoolean(tag));
+        return NBT.get(item, nbt -> (boolean) nbt.hasTag(tag));
     }
 
     public static String getCompound(ItemStack item) {
