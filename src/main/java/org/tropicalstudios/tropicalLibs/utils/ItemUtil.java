@@ -1,7 +1,5 @@
 package org.tropicalstudios.tropicalLibs.utils;
 
-import com.sk89q.jnbt.NBTUtils;
-import com.sk89q.worldedit.util.formatting.text.NbtComponent;
 import de.tr7zw.changeme.nbtapi.NBT;
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
 import de.tr7zw.changeme.nbtapi.iface.ReadableNBT;
@@ -16,8 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class ItemUtil {
 
-    // Apply durability loss according to the number of broken blocks,
-    // Do nothing if the player is in creative
+    // Apply durability loss
     public static void applyDurabilityLoss(Player player, ItemStack item) {
 
         if (player.getGameMode() == GameMode.CREATIVE)
@@ -38,6 +35,39 @@ public class ItemUtil {
                 item.setItemMeta(damageable);
             }
         }
+    }
+
+    // Apply durability loss according to the number of blocks broken
+    public static void applyDurabilityLoss(Player player, ItemStack item, int count) {
+        if (player.getGameMode() == GameMode.CREATIVE || count <= 0)
+            return;
+
+        ItemMeta itemMeta = item.getItemMeta();
+        if (!(itemMeta instanceof Damageable damageable))
+            return;
+
+        int unbreakingLevel = item.getEnchantmentLevel(Enchantment.DURABILITY);
+        int damageToApply = 0;
+
+        // Calculate total damage to apply based on count and Unbreaking enchantment
+        for (int i = 0; i < count; i++)
+            if (unbreakingLevel <= 0 || Math.random() < 1.0 / (unbreakingLevel + 1))
+                damageToApply++;
+
+        if (damageToApply <= 0)
+            return;
+
+        int newDamage = damageable.getDamage() + damageToApply;
+        int maxDurability = item.getType().getMaxDurability();
+
+        if (newDamage >= maxDurability) {
+            player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 1.0F);
+            item.setAmount(0);
+            return;
+        }
+
+        damageable.setDamage(newDamage);
+        item.setItemMeta(damageable);
     }
 
     // Apply glow effect to item
