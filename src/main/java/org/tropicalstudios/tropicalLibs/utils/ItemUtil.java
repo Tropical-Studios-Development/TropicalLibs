@@ -76,6 +76,10 @@ public class ItemUtil {
         return item.getType() == Material.BOW;
     }
 
+    public static boolean isFishingRod(ItemStack item) {
+        return item.getType() == Material.FISHING_ROD;
+    }
+
     // Check if an item is armor
     public static boolean isArmor(ItemStack item) {
         return item.getType().name().endsWith("_HELMET")
