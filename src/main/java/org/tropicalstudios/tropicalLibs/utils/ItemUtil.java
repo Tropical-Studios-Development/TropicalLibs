@@ -1,8 +1,5 @@
 package org.tropicalstudios.tropicalLibs.utils;
 
-import de.tr7zw.changeme.nbtapi.NBT;
-import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
-import de.tr7zw.changeme.nbtapi.iface.ReadableNBT;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -72,10 +69,12 @@ public class ItemUtil {
                 item.getType() == Material.DIAMOND_HOE || item.getType() == Material.NETHERITE_HOE;
     }
 
+    // Check if an item is a bow
     public static boolean isBow(ItemStack item) {
         return item.getType() == Material.BOW;
     }
 
+    // Check if an item is a fishing rod
     public static boolean isFishingRod(ItemStack item) {
         return item.getType() == Material.FISHING_ROD;
     }
@@ -86,5 +85,25 @@ public class ItemUtil {
                 || item.getType().name().endsWith("_CHESTPLATE")
                 || item.getType().name().endsWith("_LEGGINGS")
                 || item.getType().name().endsWith("_BOOTS");
+    }
+
+    // Check if an item is helmet
+    public static boolean isHelmet(ItemStack item) {
+        return item.getType().name().endsWith("_HELMET");
+    }
+
+    // Check if an item is chestplate
+    public static boolean isChestplate(ItemStack item) {
+        return item.getType().name().endsWith("_CHESTPLATE");
+    }
+
+    // Check if an item is leggings
+    public static boolean isLeggings(ItemStack item) {
+        return item.getType().name().endsWith("_LEGGINGS");
+    }
+
+    // Check if an item is boots
+    public static boolean isBoots(ItemStack item) {
+        return item.getType().name().endsWith("_BOOTS");
     }
 }

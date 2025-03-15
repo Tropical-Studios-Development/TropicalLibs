@@ -7,9 +7,11 @@ import java.util.Collection;
 
 public class PlayerUtil {
 
+    // Static player variables
     public static final int PLAYER_INV_SIZE = 36;
     public static final double BASE_PLAYER_HEALTH = 20.0;
 
+    // Format the ping of a player
     public static String getPing(Player player) {
         int ping =  player.getPing();
         return (ping <= 80) ? "&a" + ping :
@@ -17,6 +19,7 @@ public class PlayerUtil {
                         "&c" + ping;
     }
 
+    // Get all online players
     public static Collection<? extends Player> getOnlinePlayers() {
         return Bukkit.getOnlinePlayers();
     }

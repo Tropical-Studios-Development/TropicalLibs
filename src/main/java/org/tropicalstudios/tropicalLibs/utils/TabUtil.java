@@ -13,12 +13,14 @@ public class TabUtil {
 
     private static List<String> cachedOfflinePlayers = new LinkedList<>();
 
+    // Filter suggestions
     public static List<String> filter(List<String> completions, String prefix) {
         return completions.stream()
                 .filter(s -> s.toLowerCase().startsWith(prefix.toLowerCase()))
                 .collect(Collectors.toList());
     }
 
+    // Filter offline player names
     public static List<String> getFilteredOfflinePlayerNames(String prefix) {
         int MAX_SUGGESTIONS = 20;
         return cachedOfflinePlayers.stream()
@@ -27,6 +29,7 @@ public class TabUtil {
                 .collect(Collectors.toList());
     }
 
+    // Get offline players
     public static void updateOfflinePlayerCache() {
         cachedOfflinePlayers = Arrays.stream(Bukkit.getOfflinePlayers())
                 .map(OfflinePlayer::getName)

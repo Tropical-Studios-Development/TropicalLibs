@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 
 public class RegionUtil {
 
+    // Check if the location is protected (WorldGuard)
     public static boolean isLocationProtected(Player player, Location location) {
 
         if (WorldEditAllow.isPluginEnabled())
@@ -23,10 +24,12 @@ public class RegionUtil {
 
     private static class WorldEditAllow {
 
+        // Check if WorldGuard is enabled
         private static boolean isPluginEnabled() {
             return Bukkit.getServer().getPluginManager().getPlugin("WorldGuard") != null;
         }
 
+        // Check if location is protected
         private static boolean isLocationProtected(Player player, Location defaultLocation) {
             com.sk89q.worldedit.util.Location location = BukkitAdapter.adapt(defaultLocation);
             LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);

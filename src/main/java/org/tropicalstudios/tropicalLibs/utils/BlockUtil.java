@@ -46,6 +46,7 @@ public class BlockUtil {
         return material.name().endsWith("_ORE") || material == Material.NETHER_QUARTZ_ORE;
     }
 
+    // Check if the material is a log
     public static boolean isLog(Material material) {
         return material == Material.OAK_LOG ||
                 material == Material.SPRUCE_LOG ||

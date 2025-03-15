@@ -7,24 +7,26 @@ import java.lang.reflect.Field;
 
 public class PluginUtil {
 
+    // Set the plugin instance to the plugin using the lib
     public static void setPluginInstance(Plugin plugin) {
         try {
-            // Get the ChatUtil class
-            Class<?> chatUtilClass = Class.forName("org.tropicalstudios.tropicalLibs.TropicalLibs");
+            // Get the TropicalLibs class
+            Class<?> libsClass = Class.forName("org.tropicalstudios.tropicalLibs.TropicalLibs");
 
-            // Get the customPrefix field
-            Field customPrefixField = chatUtilClass.getDeclaredField("INSTANCE");
+            // Get the instance field
+            Field instanceField = libsClass.getDeclaredField("INSTANCE");
 
             // Make it accessible even if it's private
-            customPrefixField.setAccessible(true);
+            instanceField.setAccessible(true);
 
-            // Set your custom prefix
-            customPrefixField.set(null, plugin);
+            // Set your instance
+            instanceField.set(null, plugin);
         } catch (Exception e) {
             Bukkit.getLogger().severe("Failed to set plugin instance: " + e.getMessage());
         }
     }
 
+    // Set the plugin prefix
     public static void setPluginPrefix(String prefix) {
         try {
             // Get the ChatUtil class

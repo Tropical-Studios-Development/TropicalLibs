@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 
 public class ChatUtil {
 
+    // Plugin prefix
     private static String customPrefix = "";
 
     public ChatUtil(String customPrefix) {
@@ -39,6 +40,7 @@ public class ChatUtil {
     // Check for HEX pattern
     private static final Pattern HEX_PATTERN = Pattern.compile("&(#[A-Fa-f0-9]{6})");
 
+    // Format the string
     private static String format(String string) {
         // Return empty string if input is null
         if (string == null) {
@@ -54,6 +56,7 @@ public class ChatUtil {
         return string;
     }
 
+    // Capitalize the first letters of words (separated by an '-')
     public static String capitalizeWords(String input) {
         if (input == null || input.isEmpty()) {
             return input;
