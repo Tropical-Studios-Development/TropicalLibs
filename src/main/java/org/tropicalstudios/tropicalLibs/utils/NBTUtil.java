@@ -9,23 +9,23 @@ public class NBTUtil {
 
     // Set a string
     public static void setString(ItemStack item, String tag, String value) {
-        CompletableFuture.runAsync(() -> NBT.modify(item, nbt -> {
+        NBT.modify(item, nbt -> {
             nbt.setString(tag, value);
-        }));
+        });
     }
 
     // Set a boolean
     public static void setBool(ItemStack item, String tag, boolean value) {
-        CompletableFuture.runAsync(() -> NBT.modify(item, nbt -> {
+        NBT.modify(item, nbt -> {
             nbt.setBoolean(tag, value);
-        }));
+        });
     }
 
     // Set an integer
     public static void setInt(ItemStack item, String tag, int value) {
-        CompletableFuture.runAsync(() -> NBT.modify(item, nbt -> {
+        NBT.modify(item, nbt -> {
             nbt.setInteger(tag, value);
-        }));
+        });
     }
 
     // Get a string
