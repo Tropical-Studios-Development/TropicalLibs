@@ -26,7 +26,7 @@ public class Messenger {
                 p.sendMessage(ChatUtil.c("%prefix%" + message));
     }
 
-    // Send a info message in the console
+    // Send an info message in the console
     public static void info(String message) {
         Bukkit.getLogger().info(ChatUtil.c(message));
     }
