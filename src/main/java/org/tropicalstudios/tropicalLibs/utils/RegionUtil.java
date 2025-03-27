@@ -29,12 +29,18 @@ public class RegionUtil {
             return Bukkit.getServer().getPluginManager().getPlugin("WorldGuard") != null;
         }
 
-        // Check if location is protected
         private static boolean isLocationProtected(Player player, Location defaultLocation) {
             com.sk89q.worldedit.util.Location location = BukkitAdapter.adapt(defaultLocation);
             LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
             RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+
+            if (container == null)
+                return false;
+
             RegionQuery query = container.createQuery();
+            if (query.getApplicableRegions(location).size() == 0)
+                return false;
+
             boolean result = query.testState(location, localPlayer, Flags.BLOCK_BREAK);
             return !result;
         }

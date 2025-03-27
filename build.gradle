@@ -41,6 +41,37 @@ publishing {
     }
 }
 
+def targetLocations = [
+        'C:\\Users\\gamet\\Desktop\\plugins',
+        'C:\\Users\\gamet\\IdeaProjects\\TropicalCore\\libs',
+        'C:\\Users\\gamet\\IdeaProjects\\TropicalPets\\libs',
+        'C:\\Users\\gamet\\IdeaProjects\\TropicalLevels\\libs',
+        'C:\\Users\\gamet\\IdeaProjects\\TropicalChat\\libs',
+        'C:\\Users\\gamet\\IdeaProjects\\AutoReboot\\libs',
+        'C:\\Users\\gamet\\IdeaProjects\\TropicalGiveaway\\libs'
+]
+
+// Create copy tasks dynamically for each location
+targetLocations.eachWithIndex { location, index ->
+    tasks.register("copyJarToLocation${index}", Copy) {
+        from jar.archiveFile
+        into location
+        dependsOn jar
+    }
+}
+
+// Create a task that depends on all copy tasks
+tasks.register('copyToAllLocations') {
+    dependsOn tasks.withType(Copy).matching { task ->
+        task.name.startsWith("copyJarToLocation")
+    }
+}
+
+// Make the build task depend on the copyToAllLocations task
+tasks.named('build').configure {
+    finalizedBy('copyToAllLocations')
+}
+
 def targetJavaVersion = 21
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
