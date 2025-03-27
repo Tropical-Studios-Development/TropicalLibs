@@ -100,14 +100,20 @@ public class ChatUtil {
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacy(ChatUtil.c(message)));
     }
 
-    // Send title to player with predefined timings
-    public static void sendTitle(Player player, String title, String subtitle) {
-        player.sendTitle(ChatUtil.c(title), ChatUtil.c(subtitle), 10, 40, 10);
-    }
-
     // Send title to player with custom timings
     public static void sendTitle(Player player, String title, String subtitle, int i1, int i2, int i3) {
         player.sendTitle(ChatUtil.c(title), ChatUtil.c(subtitle), i1, i2, i3);
+    }
+
+    // Send title to player with predefined timings
+    public static void sendTitle(Player player, String title, String subtitle) {
+        sendTitle(player, title, subtitle, 10, 40, 10);
+    }
+
+    // Send title to all online players
+    public static void sendTitle(String title, String subtitle) {
+        for (Player player : PlayerUtil.getOnlinePlayers())
+            sendTitle(player, title, subtitle, 10, 40, 10);
     }
 
     // Send toast to player
