@@ -42,13 +42,14 @@ publishing {
 }
 
 def targetLocations = [
-        'C:\\Users\\gamet\\Desktop\\plugins',
         'C:\\Users\\gamet\\IdeaProjects\\TropicalCore\\libs',
         'C:\\Users\\gamet\\IdeaProjects\\TropicalPets\\libs',
         'C:\\Users\\gamet\\IdeaProjects\\TropicalLevels\\libs',
         'C:\\Users\\gamet\\IdeaProjects\\TropicalChat\\libs',
         'C:\\Users\\gamet\\IdeaProjects\\AutoReboot\\libs',
-        'C:\\Users\\gamet\\IdeaProjects\\TropicalGiveaway\\libs'
+        'C:\\Users\\gamet\\IdeaProjects\\TropicalGiveaway\\libs',
+        'C:\\Users\\gamet\\IdeaProjects\\TropicalBot\\libs',
+        'C:\\Users\\gamet\\IdeaProjects\\TropicalStaff\\libs'
 ]
 
 // Create copy tasks dynamically for each location

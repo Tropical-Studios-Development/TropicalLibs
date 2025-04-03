@@ -2,6 +2,7 @@ package org.tropicalstudios.tropicalLibs.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.MetadataValue;
 
 import java.util.Collection;
 
@@ -17,6 +18,14 @@ public class PlayerUtil {
         return (ping <= 80) ? "&a" + ping :
                 (ping <= 160) ? "&6" + ping :
                         "&c" + ping;
+    }
+
+    // Check if the player is vanished
+    public static boolean isVanished(Player player) {
+        for (MetadataValue meta : player.getMetadata("vanished")) {
+            if (meta.asBoolean()) return true;
+        }
+        return false;
     }
 
     // Get all online players
