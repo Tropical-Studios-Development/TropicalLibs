@@ -28,6 +28,16 @@ public class PlayerUtil {
         return false;
     }
 
+    // Get a player from their displayName
+    public static Player getPlayerByDisplayName(String displayName) {
+        for (Player player : getOnlinePlayers()) {
+            if (player.getDisplayName().equals(displayName)) {
+                return player;
+            }
+        }
+        return null;
+    }
+
     // Get all online players
     public static Collection<? extends Player> getOnlinePlayers() {
         return Bukkit.getOnlinePlayers();

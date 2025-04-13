@@ -71,6 +71,27 @@ public class ChatUtil {
         return result.deleteCharAt(result.length() - 1).toString(); // Remove trailing "-"
     }
 
+    // Capitalize the first letters of words and remove separators
+    public static String capitalizeWords(String input, String separator) {
+        if (input == null || input.isEmpty())
+            return input;
+
+        if (!input.contains(separator))
+            return input;
+
+        String[] words = input.split(separator);
+        StringBuilder result = new StringBuilder();
+
+        for (String word : words) {
+            if (!word.isEmpty()) {
+                result.append(Character.toUpperCase(word.charAt(0)))
+                        .append(word.substring(1).toLowerCase());
+            }
+        }
+
+        return result.toString();
+    }
+
     // Execute command as a player
     public static void executePlayerCommand(Player player, String command) {
         player.performCommand(command);
