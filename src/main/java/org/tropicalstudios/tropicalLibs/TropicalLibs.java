@@ -7,12 +7,10 @@ public final class TropicalLibs extends JavaPlugin {
 
     private static Plugin INSTANCE;
 
-    public TropicalLibs(Plugin plugin) {
-        TropicalLibs.INSTANCE = plugin;
-    }
-
     @Override
-    public void onEnable() {}
+    public void onEnable() {
+        INSTANCE = this;
+    }
 
     @Override
     public void onDisable() {}

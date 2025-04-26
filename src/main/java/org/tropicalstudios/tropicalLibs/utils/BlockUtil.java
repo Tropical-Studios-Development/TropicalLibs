@@ -1,10 +1,13 @@
 package org.tropicalstudios.tropicalLibs.utils;
 
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Random;
 
 public class BlockUtil {
@@ -68,5 +71,16 @@ public class BlockUtil {
                 material == Material.WARPED_STEM ||
                 material == Material.STRIPPED_CRIMSON_STEM ||
                 material == Material.STRIPPED_WARPED_STEM;
+    }
+
+    public static List<Block> getAdjacentBlocks(Block block) {
+        List<Block> adjacentBlocks = new ArrayList<>();
+        adjacentBlocks.add(block.getRelative(BlockFace.NORTH));
+        adjacentBlocks.add(block.getRelative(BlockFace.EAST));
+        adjacentBlocks.add(block.getRelative(BlockFace.SOUTH));
+        adjacentBlocks.add(block.getRelative(BlockFace.WEST));
+        adjacentBlocks.add(block.getRelative(BlockFace.UP));
+        adjacentBlocks.add(block.getRelative(BlockFace.DOWN));
+        return adjacentBlocks;
     }
 }

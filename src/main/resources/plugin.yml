@@ -2,5 +2,5 @@ name: TropicalLibs
 version: '1.0'
 author: GameTheEnder
 main: org.tropicalstudios.tropicalLibs.TropicalLibs
-api-version: '1.13'
+api-version: '1.21'
 description: A library plugin providing utility functions

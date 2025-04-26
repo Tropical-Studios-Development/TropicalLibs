@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'maven-publish'
+    id("io.github.goooler.shadow") version "8.1.7"
 }
 
 group = 'org.tropicalstudios'
@@ -29,8 +30,17 @@ repositories {
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT")
     compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.2.15'
-    compileOnly 'de.tr7zw:item-nbt-api:2.14.1'
     compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.9'
+    implementation("de.tr7zw:item-nbt-api:2.15.0")
+}
+
+shadowJar {
+    relocate("de.tr7zw.changeme.nbtapi", "org.tropicalstudios.libs.nbt")
+    archiveClassifier.set("shadow")
+}
+
+tasks.named('build').configure {
+    dependsOn(shadowJar)
 }
 
 publishing {
@@ -50,26 +60,32 @@ def targetLocations = [
         'C:\\Users\\gamet\\IdeaProjects\\TropicalGiveaway\\libs',
         'C:\\Users\\gamet\\IdeaProjects\\TropicalBot\\libs',
         'C:\\Users\\gamet\\IdeaProjects\\TropicalStaff\\libs',
-        'C:\\Users\\gamet\\IdeaProjects\\KlurEffects\\libs'
+        'C:\\Users\\gamet\\IdeaProjects\\KlurEffects\\libs',
+        'C:\\Users\\gamet\\IdeaProjects\\EasterEvent\\libs',
+        'C:\\Users\\gamet\\IdeaProjects\\TropicalNick\\libs',
+        'C:\\Users\\gamet\\IdeaProjects\\TropicalEnchants\\libs',
+        'C:\\Users\\gamet\\IdeaProjects\\TropicalExtras\\libs',
+        'C:\\Users\\gamet\\Desktop\\plugins'
 ]
 
-// Create copy tasks dynamically for each location
 targetLocations.eachWithIndex { location, index ->
     tasks.register("copyJarToLocation${index}", Copy) {
-        from jar.archiveFile
+        from shadowJar
         into location
-        dependsOn jar
+        dependsOn shadowJar
+
+        rename { String fileName ->
+            fileName.replace('-shadow', '')
+        }
     }
 }
 
-// Create a task that depends on all copy tasks
 tasks.register('copyToAllLocations') {
     dependsOn tasks.withType(Copy).matching { task ->
         task.name.startsWith("copyJarToLocation")
     }
 }
 
-// Make the build task depend on the copyToAllLocations task
 tasks.named('build').configure {
     finalizedBy('copyToAllLocations')
 }
