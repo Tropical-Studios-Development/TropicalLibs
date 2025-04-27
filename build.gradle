@@ -35,7 +35,7 @@ dependencies {
 }
 
 shadowJar {
-    relocate("de.tr7zw.changeme.nbtapi", "org.tropicalstudios.libs.nbt")
+    relocate("de.tr7zw.changeme.nbtapi", "org.tropicalstudios.tropicalLibs.nbt")
     archiveClassifier.set("shadow")
 }
 

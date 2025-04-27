@@ -1,6 +1,7 @@
 package org.tropicalstudios.tropicalLibs.utils;
 
 import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -135,6 +136,17 @@ public class ChatUtil {
     public static void sendTitle(String title, String subtitle) {
         for (Player player : PlayerUtil.getOnlinePlayers())
             sendTitle(player, title, subtitle, 10, 40, 10);
+    }
+
+    // Send a clickable message to the player
+    public static void sendClickableMessage(Player player, String text, String URL, boolean bold, boolean italic, boolean underlined) {
+        TextComponent message = new TextComponent(text);
+        message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, URL));
+        message.setBold(bold);
+        message.setItalic(italic);
+        message.setUnderlined(underlined);
+
+        player.spigot().sendMessage(message);
     }
 
     // Send toast to player

@@ -28,11 +28,11 @@ public class Messenger {
 
     // Send an info message in the console
     public static void info(String message) {
-        Bukkit.getLogger().info(ChatUtil.c(message));
+        Bukkit.getLogger().info("[" + TropicalLibs.getPluginName() + "] " + ChatUtil.c(message));
     }
 
     // Send a warning message in the console
     public static void warn(String message) {
-        Bukkit.getLogger().warning(ChatUtil.c(message));
+        Bukkit.getLogger().warning("[" + TropicalLibs.getPluginName() + "] " + ChatUtil.c(message));
     }
 }
