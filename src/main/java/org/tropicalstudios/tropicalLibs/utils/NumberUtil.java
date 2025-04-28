@@ -15,6 +15,16 @@ public class NumberUtil {
         return true;
     }
 
+    // Check if a number is negative
+    public static boolean isNegativeNumber(int number) {
+        return number < 0;
+    }
+
+    // Check if a string is a negative number
+    public static boolean isNegativeNumber(String s) {
+        return Integer.parseInt(s) < 0;
+    }
+
     // Convert normal numbers to roman numbers
     public static String intToRoman(int num) {
         StringBuilder roman = new StringBuilder();
