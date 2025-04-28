@@ -28,6 +28,15 @@ public class PlayerUtil {
         return false;
     }
 
+    // Get a player (automatically chooses if it should get it using their real name or display name)
+    public static Player getPlayer(String playerName) {
+        Player player = Bukkit.getPlayer(playerName);
+        if (player == null) {
+            player = getPlayerByDisplayName(playerName);
+        }
+        return player;
+    }
+
     // Get a player from their displayName
     public static Player getPlayerByDisplayName(String displayName) {
         for (Player player : getOnlinePlayers()) {

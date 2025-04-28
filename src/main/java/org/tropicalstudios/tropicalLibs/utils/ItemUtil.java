@@ -34,6 +34,11 @@ public class ItemUtil {
         }
     }
 
+    // Check if an item is null
+    public static boolean isNull(ItemStack item) {
+        return item == null || item.getType() == Material.AIR;
+    }
+
     // Check if an item is a sword
     public static boolean isSword(ItemStack item) {
         return item.getType() == Material.WOODEN_SWORD || item.getType() == Material.STONE_SWORD ||

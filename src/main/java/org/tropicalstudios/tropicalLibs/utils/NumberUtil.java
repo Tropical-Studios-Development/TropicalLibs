@@ -25,6 +25,11 @@ public class NumberUtil {
         return Integer.parseInt(s) < 0;
     }
 
+    // Convert an int to a string
+    public static String convertIntToString(int number) {
+        return Integer.toString(number);
+    }
+
     // Convert normal numbers to roman numbers
     public static String intToRoman(int num) {
         StringBuilder roman = new StringBuilder();

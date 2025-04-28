@@ -44,6 +44,12 @@ public class BlockUtil {
         };
     }
 
+    // Check if a block is null or air
+    public static boolean isNull(Block block) {
+        return block == null || block.getType() == Material.AIR;
+
+    }
+
     // Check if the material is an ore
     public static boolean isOre(Material material) {
         return material.name().endsWith("_ORE") || material == Material.NETHER_QUARTZ_ORE;
