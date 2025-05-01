@@ -143,14 +143,14 @@ public class ChatUtil {
      * Send a clickable message to a player with customizable action type
      *
      * @param player      The player to send the message to
-     * @param text        The text content of the message
      * @param actionType  The type of action (OPEN_URL, RUN_COMMAND, SUGGEST_COMMAND, COPY_TO_CLIPBOARD)
+     * @param text        The text content of the message
      * @param actionValue The URL or command for the action
      * @param bold        Whether the text should be bold
      * @param italic      Whether the text should be italic
      * @param underlined  Whether the text should be underlined
      */
-    public static void sendClickableMessage(Player player, String text, ClickEvent.Action actionType,
+    public static void sendClickableMessage(Player player, ClickEvent.Action actionType, String text,
                                             String actionValue, boolean bold, boolean italic, boolean underlined) {
         TextComponent message = new TextComponent(text);
         message.setClickEvent(new ClickEvent(actionType, actionValue));
