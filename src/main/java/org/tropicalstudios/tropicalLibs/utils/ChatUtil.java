@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.tropicalstudios.tropicalLibs.toasts.AdvancementAccessor;
 import org.tropicalstudios.tropicalLibs.toasts.ToastStyle;
 
@@ -138,10 +139,21 @@ public class ChatUtil {
             sendTitle(player, title, subtitle, 10, 40, 10);
     }
 
-    // Send a clickable message to the player
-    public static void sendClickableMessage(Player player, String text, String URL, boolean bold, boolean italic, boolean underlined) {
+    /**
+     * Send a clickable message to a player with customizable action type
+     *
+     * @param player      The player to send the message to
+     * @param text        The text content of the message
+     * @param actionType  The type of action (OPEN_URL, RUN_COMMAND, SUGGEST_COMMAND, COPY_TO_CLIPBOARD)
+     * @param actionValue The URL or command for the action
+     * @param bold        Whether the text should be bold
+     * @param italic      Whether the text should be italic
+     * @param underlined  Whether the text should be underlined
+     */
+    public static void sendClickableMessage(Player player, String text, ClickEvent.Action actionType,
+                                            String actionValue, boolean bold, boolean italic, boolean underlined) {
         TextComponent message = new TextComponent(text);
-        message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, URL));
+        message.setClickEvent(new ClickEvent(actionType, actionValue));
         message.setBold(bold);
         message.setItalic(italic);
         message.setUnderlined(underlined);
