@@ -1,6 +1,7 @@
 package org.tropicalstudios.tropicalLibs.utils;
 
 import org.bukkit.Bukkit;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
 
@@ -11,6 +12,7 @@ public class PlayerUtil {
     // Static player variables
     public static final int PLAYER_INV_SIZE = 36;
     public static final double BASE_PLAYER_HEALTH = 20.0;
+    public static final int BASE_SCALE = 1;
 
     // Format the ping of a player
     public static String getPing(Player player) {
@@ -45,6 +47,11 @@ public class PlayerUtil {
             }
         }
         return null;
+    }
+
+    // Set the scale of a player
+    public static void setScale(Player player, double scale) {
+        player.getAttribute(Attribute.SCALE).setBaseValue(scale);
     }
 
     // Get all online players

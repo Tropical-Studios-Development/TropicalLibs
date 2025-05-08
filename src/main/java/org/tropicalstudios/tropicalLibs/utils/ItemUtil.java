@@ -19,7 +19,7 @@ public class ItemUtil {
 
         ItemMeta itemMeta = item.getItemMeta();
         if (itemMeta instanceof Damageable damageable) {
-            int unbreakingLevel = item.getEnchantmentLevel(Enchantment.DURABILITY);
+            int unbreakingLevel = item.getEnchantmentLevel(Enchantment.UNBREAKING);
             if (unbreakingLevel <= 0 || Math.random() < (1.0 / (unbreakingLevel + 1))) {
                 int newDamage = damageable.getDamage() + 1;
                 int maxDurability = item.getType().getMaxDurability();
