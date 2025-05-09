@@ -49,9 +49,15 @@ public class PlayerUtil {
         return null;
     }
 
-    // Set the scale of a player
-    public static void setScale(Player player, double scale) {
-        player.getAttribute(Attribute.SCALE).setBaseValue(scale);
+    /**
+     * Set the base value of a player attribute
+     *
+     * @param player     The player which the attribute will be set for
+     * @param attribute  The attribute that will be set
+     * @param value      The value of the attribute
+     */
+    public static void setAttribute(Player player, Attribute attribute,double value) {
+        player.getAttribute(attribute).setBaseValue(value);
     }
 
     // Get all online players
