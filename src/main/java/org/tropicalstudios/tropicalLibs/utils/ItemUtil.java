@@ -39,39 +39,42 @@ public class ItemUtil {
         return item == null || item.getType() == Material.AIR;
     }
 
+    public static boolean isTool(ItemStack item) {
+        return isSword(item)
+                || isPickaxe(item)
+                || isAxe(item)
+                || isShovel(item)
+                || isHoe(item)
+                || isTrident(item)
+                || isFishingRod(item)
+                || isBow(item)
+                || isMace(item)
+                || isShield(item);
+    }
+
     // Check if an item is a sword
     public static boolean isSword(ItemStack item) {
-        return item.getType() == Material.WOODEN_SWORD || item.getType() == Material.STONE_SWORD ||
-                item.getType() == Material.IRON_SWORD || item.getType() == Material.GOLDEN_SWORD ||
-                item.getType() == Material.DIAMOND_SWORD || item.getType() == Material.NETHERITE_SWORD;
+        return item.getType().name().endsWith("_SWORD");
     }
 
     // Check if an item is a pickaxe
     public static boolean isPickaxe(ItemStack item) {
-        return item.getType() == Material.WOODEN_PICKAXE || item.getType() == Material.STONE_PICKAXE ||
-                item.getType() == Material.IRON_PICKAXE || item.getType() == Material.GOLDEN_PICKAXE ||
-                item.getType() == Material.DIAMOND_PICKAXE || item.getType() == Material.NETHERITE_PICKAXE;
+        return item.getType().name().endsWith("_PICKAXE");
     }
 
     // Check if an item is an axe
     public static boolean isAxe(ItemStack item) {
-        return item.getType() == Material.WOODEN_AXE || item.getType() == Material.STONE_AXE ||
-                item.getType() == Material.IRON_AXE || item.getType() == Material.GOLDEN_AXE ||
-                item.getType() == Material.DIAMOND_AXE || item.getType() == Material.NETHERITE_AXE;
+        return item.getType().name().endsWith("_AXE");
     }
 
     // Check if an item is a shovel
     public static boolean isShovel(ItemStack item) {
-        return item.getType() == Material.WOODEN_SHOVEL || item.getType() == Material.STONE_SHOVEL ||
-                item.getType() == Material.IRON_SHOVEL || item.getType() == Material.GOLDEN_SHOVEL ||
-                item.getType() == Material.DIAMOND_SHOVEL || item.getType() == Material.NETHERITE_SHOVEL;
+        return item.getType().name().endsWith("_SHOVEL");
     }
 
     // Check if an item is a hoe
     public static boolean isHoe(ItemStack item) {
-        return item.getType() == Material.WOODEN_HOE || item.getType() == Material.STONE_HOE ||
-                item.getType() == Material.IRON_HOE || item.getType() == Material.GOLDEN_HOE ||
-                item.getType() == Material.DIAMOND_HOE || item.getType() == Material.NETHERITE_HOE;
+        return item.getType().name().endsWith("_HOE");
     }
 
     // Check if an item is a bow
@@ -82,6 +85,20 @@ public class ItemUtil {
     // Check if an item is a fishing rod
     public static boolean isFishingRod(ItemStack item) {
         return item.getType() == Material.FISHING_ROD;
+    }
+
+    // Check if an item is a shield
+    public static boolean isShield(ItemStack item) {
+        return item.getType() == Material.SHIELD;
+    }
+
+    // Check if an item is a trident
+    public static boolean isTrident(ItemStack item) {
+        return item.getType() == Material.TRIDENT;
+    }
+
+    public static boolean isMace(ItemStack item) {
+        return item.getType() == Material.MACE;
     }
 
     // Check if an item is armor
