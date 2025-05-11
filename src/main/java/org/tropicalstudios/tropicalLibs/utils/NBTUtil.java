@@ -10,56 +10,44 @@ import java.util.concurrent.CompletableFuture;
 public class NBTUtil {
 
     // Set a string nbt to an item
-    public static CompletableFuture<Void> setString(ItemStack item, String tag, String value) {
-        return CompletableFuture.runAsync(() -> {
-            NBT.modify(item, nbt -> {
-                nbt.setString(tag, value);
-            });
+    public static void setString(ItemStack item, String tag, String value) {
+        NBT.modify(item, nbt -> {
+            nbt.setString(tag, value);
         });
     }
 
     // Set a string nbt to an entity
-    public static CompletableFuture<Void> setString(Entity entity, String tag, String value) {
-        return CompletableFuture.runAsync(() -> {
-            NBT.modify(entity, nbt -> {
-                nbt.setString(tag, value);
-            });
+    public static void setString(Entity entity, String tag, String value) {
+        NBT.modify(entity, nbt -> {
+            nbt.setString(tag, value);
         });
     }
 
     // Set a boolean nbt to an item
-    public static CompletableFuture<Void> setBool(ItemStack item, String tag, boolean value) {
-        return CompletableFuture.runAsync(() -> {
-            NBT.modify(item, nbt -> {
-                nbt.setBoolean(tag, value);
-            });
+    public static void setBool(ItemStack item, String tag, boolean value) {
+        NBT.modify(item, nbt -> {
+            nbt.setBoolean(tag, value);
         });
     }
 
     // Set a boolean nbt to an entity
-    public static CompletableFuture<Void> setBool(Entity entity, String tag, boolean value) {
-        return CompletableFuture.runAsync(() -> {
-            NBT.modifyPersistentData(entity, nbt -> {
-                nbt.setBoolean(tag, value);
-            });
+    public static void setBool(Entity entity, String tag, boolean value) {
+        NBT.modifyPersistentData(entity, nbt -> {
+            nbt.setBoolean(tag, value);
         });
     }
 
     // Set an integer nbt to an item
-    public static CompletableFuture<Void> setInt(ItemStack item, String tag, int value) {
-        return CompletableFuture.runAsync(() -> {
-            NBT.modify(item, nbt -> {
-                nbt.setInteger(tag, value);
-            });
+    public static void setInt(ItemStack item, String tag, int value) {
+        NBT.modify(item, nbt -> {
+            nbt.setInteger(tag, value);
         });
     }
 
     // Set an integer nbt to an entity
-    public static CompletableFuture<Void> setInt(Entity entity, String tag, int value) {
-        return CompletableFuture.runAsync(() -> {
-            NBT.modifyPersistentData(entity, nbt -> {
-                nbt.setInteger(tag, value);
-            });
+    public static void setInt(Entity entity, String tag, int value) {
+        NBT.modifyPersistentData(entity, nbt -> {
+            nbt.setInteger(tag, value);
         });
     }
 
