@@ -4,7 +4,10 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.Flags;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import org.bukkit.Bukkit;
@@ -18,6 +21,14 @@ public class RegionUtil {
 
         if (WorldEditAllow.isPluginEnabled())
             return WorldEditAllow.isLocationProtected(player, location);
+
+        return false;
+    }
+
+    // Check if player is in a specific region by name
+    public static boolean isInRegion(Player player, String regionName) {
+        if (WorldEditAllow.isPluginEnabled())
+            return WorldEditAllow.isInRegion(player, regionName);
 
         return false;
     }
@@ -43,6 +54,29 @@ public class RegionUtil {
 
             boolean result = query.testState(location, localPlayer, Flags.BLOCK_BREAK);
             return !result;
+        }
+
+        private static boolean isInRegion(Player player, String regionName) {
+            RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+
+            if (container == null)
+                return false;
+
+            RegionManager regionManager = container.get(BukkitAdapter.adapt(player.getWorld()));
+
+            if (regionManager == null)
+                return false;
+
+            com.sk89q.worldedit.util.Location location = BukkitAdapter.adapt(player.getLocation());
+            ApplicableRegionSet regions = container.createQuery().getApplicableRegions(location);
+
+            for (ProtectedRegion region : regions) {
+                if (region.getId().equalsIgnoreCase(regionName)) {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
