@@ -51,6 +51,20 @@ public class NBTUtil {
         });
     }
 
+    // Set a double nbt to an item
+    public static void setDouble(ItemStack item, String tag, double value) {
+        NBT.modify(item, nbt -> {
+            nbt.setDouble(tag, value);
+        });
+    }
+
+    // Set a double nbt to an entity
+    public static void setDouble(Entity entity, String tag, double value) {
+        NBT.modifyPersistentData(entity, nbt -> {
+            nbt.setDouble(tag, value);
+        });
+    }
+
     // Get a string nbt from an item
     public static CompletableFuture<String> getString(ItemStack item, String tag) {
         return CompletableFuture.supplyAsync(() -> NBT.get(item, nbt -> (String) nbt.getString(tag)));
@@ -79,6 +93,16 @@ public class NBTUtil {
     // Get an integer nbt from an entity
     public static CompletableFuture<Integer> getInt(Entity entity, String tag) {
         return CompletableFuture.supplyAsync(() -> NBT.getPersistentData(entity, nbt -> nbt.getInteger(tag)));
+    }
+
+    // Get a double nbt from an item
+    public static CompletableFuture<Double> getDouble(ItemStack item, String tag) {
+        return CompletableFuture.supplyAsync(() -> NBT.get(item, nbt -> (double) nbt.getDouble(tag)));
+    }
+
+    // Get a double nbt from an entity
+    public static CompletableFuture<Double> getDouble(Entity entity, String tag) {
+        return CompletableFuture.supplyAsync(() -> NBT.getPersistentData(entity, nbt -> nbt.getDouble(tag)));
     }
 
     // Check if an item has a tag

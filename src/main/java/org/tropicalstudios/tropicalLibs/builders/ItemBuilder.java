@@ -9,26 +9,26 @@ import org.tropicalstudios.tropicalLibs.utils.ChatUtil;
 import org.tropicalstudios.tropicalLibs.utils.NBTUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ItemBuilder {
 
     private final ItemStack item;
     private final ItemMeta itemMeta;
-
-    public ItemBuilder(ItemStack item, ItemMeta itemMeta) {
-        this.item = item;
-        this.itemMeta = itemMeta;
-    }
+    private final Map<String, Object> nbtData;
 
     public ItemBuilder(Material material) {
         this.item = new ItemStack(material);
         this.itemMeta = item.getItemMeta();
+        this.nbtData = new HashMap<>();
     }
 
     public ItemBuilder(ItemStack itemStack) {
         this.item = itemStack.clone();
         this.itemMeta = this.item.getItemMeta();
+        this.nbtData = new HashMap<>();
     }
 
     public ItemBuilder setName(String name) {
@@ -98,23 +98,53 @@ public class ItemBuilder {
     }
 
     public ItemBuilder setNBT(String tag, String value) {
-        NBTUtil.setString(item, tag, value);
+        nbtData.put(tag, value);
         return this;
     }
 
     public ItemBuilder setNBT(String tag, boolean value) {
-        NBTUtil.setBool(item, tag, value);
+        nbtData.put(tag, value);
         return this;
     }
 
     public ItemBuilder setNBT(String tag, int value) {
-        NBTUtil.setInt(item, tag, value);
+        nbtData.put(tag, value);
+        return this;
+    }
+
+    public ItemBuilder setNBT(String tag, double value) {
+        nbtData.put(tag, value);
+        return this;
+    }
+
+    public ItemBuilder removeNBT(String tag) {
+        nbtData.remove(tag);
+        return this;
+    }
+
+    public ItemBuilder clearNBT() {
+        nbtData.clear();
         return this;
     }
 
     public ItemStack build() {
         if (itemMeta != null)
             item.setItemMeta(itemMeta);
+
+        for (Map.Entry<String, Object> entry : nbtData.entrySet()) {
+            String tag = entry.getKey();
+            Object value = entry.getValue();
+
+            if (value instanceof String) {
+                NBTUtil.setString(item, tag, (String) value);
+            } else if (value instanceof Boolean) {
+                NBTUtil.setBool(item, tag, (Boolean) value);
+            } else if (value instanceof Integer) {
+                NBTUtil.setInt(item, tag, (Integer) value);
+            } else if (value instanceof Double) {
+                NBTUtil.setDouble(item, tag, (Double) value);
+            }
+        }
 
         return item;
     }
