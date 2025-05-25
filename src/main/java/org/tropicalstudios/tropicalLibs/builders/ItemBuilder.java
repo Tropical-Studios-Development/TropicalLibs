@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.tropicalstudios.tropicalLibs.utils.ChatUtil;
+import org.tropicalstudios.tropicalLibs.utils.NBTUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,6 +94,21 @@ public class ItemBuilder {
 
     public ItemBuilder setAmount(int amount) {
         item.setAmount(amount);
+        return this;
+    }
+
+    public ItemBuilder setNBT(String tag, String value) {
+        NBTUtil.setString(item, tag, value);
+        return this;
+    }
+
+    public ItemBuilder setNBT(String tag, boolean value) {
+        NBTUtil.setBool(item, tag, value);
+        return this;
+    }
+
+    public ItemBuilder setNBT(String tag, int value) {
+        NBTUtil.setInt(item, tag, value);
         return this;
     }
 
