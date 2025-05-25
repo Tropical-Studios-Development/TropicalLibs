@@ -35,4 +35,9 @@ public class Messenger {
     public static void warn(String message) {
         Bukkit.getLogger().warning("[" + TropicalLibs.getPluginName() + "] " + ChatUtil.c(message));
     }
+
+    // Send a severe warning message in the console
+    public static void severe(String message) {
+        Bukkit.getLogger().severe("[" + TropicalLibs.getPluginName() + "] " + ChatUtil.c(message));
+    }
 }
