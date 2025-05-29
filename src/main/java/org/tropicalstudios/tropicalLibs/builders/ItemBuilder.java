@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.tropicalstudios.tropicalLibs.utils.ChatUtil;
+import org.tropicalstudios.tropicalLibs.utils.ItemUtil;
 import org.tropicalstudios.tropicalLibs.utils.NBTUtil;
 
 import java.util.ArrayList;
@@ -135,6 +136,9 @@ public class ItemBuilder {
     }
 
     public ItemStack build() {
+        if (ItemUtil.isNull(item))
+            return item;
+
         if (itemMeta != null)
             item.setItemMeta(itemMeta);
 
