@@ -20,7 +20,10 @@ public class ItemBuilder {
     private final Map<String, Object> nbtData;
 
     public ItemBuilder(Material material) {
-        this.item = new ItemStack(material);
+        if (material == null)
+            this.item = new ItemStack(Material.AIR);
+        else
+            this.item = new ItemStack(material);
         this.itemMeta = item.getItemMeta();
         this.nbtData = new HashMap<>();
     }
@@ -32,8 +35,10 @@ public class ItemBuilder {
     }
 
     public ItemBuilder setName(String name) {
-        if (itemMeta != null)
-            itemMeta.setDisplayName(ChatUtil.c(name));
+        if (itemMeta != null) {
+            String displayName = (name != null) ? name : "";
+            itemMeta.setDisplayName(ChatUtil.c(displayName));
+        }
 
         return this;
     }
@@ -41,7 +46,8 @@ public class ItemBuilder {
     public ItemBuilder setLore(String lore) {
         if (itemMeta != null) {
             List<String> formattedLore = new ArrayList<>();
-            formattedLore.add(ChatUtil.c(lore));
+            String safeLore = (lore != null) ? lore : "";
+            formattedLore.add(ChatUtil.c(safeLore));
             itemMeta.setLore(formattedLore);
         }
 
@@ -50,8 +56,9 @@ public class ItemBuilder {
 
     public ItemBuilder setLore(List<String> lore) {
         if (itemMeta != null) {
-            lore = ChatUtil.c(lore);
-            itemMeta.setLore(lore);
+            List<String> safeLore = (lore != null) ? lore : new ArrayList<>();
+            safeLore = ChatUtil.c(safeLore);
+            itemMeta.setLore(safeLore);
         }
 
         return this;
