@@ -58,23 +58,8 @@ public class ChatUtil {
         return string;
     }
 
-    // Capitalize the first letters of words (separated by an '-')
-    public static String capitalizeWords(String input) {
-        if (input == null || input.isEmpty()) {
-            return input;
-        }
-        String[] words = input.split("-");
-        StringBuilder result = new StringBuilder();
-        for (String word : words) {
-            if (!word.isEmpty()) {
-                result.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1).toLowerCase()).append("-");
-            }
-        }
-        return result.deleteCharAt(result.length() - 1).toString(); // Remove trailing "-"
-    }
-
-    // Capitalize the first letters of words and remove separators
-    public static String capitalizeWords(String input, String separator) {
+    // Capitalize the first letters of words and replace separators with spaces
+    public static String beautifyName(String input, String separator) {
         if (input == null || input.isEmpty())
             return input;
 
@@ -84,10 +69,15 @@ public class ChatUtil {
         String[] words = input.split(separator);
         StringBuilder result = new StringBuilder();
 
-        for (String word : words) {
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
             if (!word.isEmpty()) {
                 result.append(Character.toUpperCase(word.charAt(0)))
                         .append(word.substring(1).toLowerCase());
+
+                if (i < words.length - 1) {
+                    result.append(" ");
+                }
             }
         }
 
