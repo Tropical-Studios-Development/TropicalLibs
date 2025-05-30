@@ -60,28 +60,28 @@ public class ChatUtil {
 
     // Capitalize the first letters of words and replace separators with spaces
     public static String beautifyName(String input, String separator) {
-        if (input == null || input.isEmpty())
-            return input;
+        if (input != null && !input.isEmpty()) {
+            if (!input.contains(separator)) {
+                return Character.toUpperCase(input.charAt(0)) + input.substring(1).toLowerCase();
+            } else {
+                String[] words = input.split(separator);
+                StringBuilder result = new StringBuilder();
 
-        if (!input.contains(separator))
-            return input;
-
-        String[] words = input.split(separator);
-        StringBuilder result = new StringBuilder();
-
-        for (int i = 0; i < words.length; i++) {
-            String word = words[i];
-            if (!word.isEmpty()) {
-                result.append(Character.toUpperCase(word.charAt(0)))
-                        .append(word.substring(1).toLowerCase());
-
-                if (i < words.length - 1) {
-                    result.append(" ");
+                for(int i = 0; i < words.length; ++i) {
+                    String word = words[i];
+                    if (!word.isEmpty()) {
+                        result.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1).toLowerCase());
+                        if (i < words.length - 1) {
+                            result.append(" ");
+                        }
+                    }
                 }
-            }
-        }
 
-        return result.toString();
+                return result.toString();
+            }
+        } else {
+            return input;
+        }
     }
 
     // Execute command as a player
