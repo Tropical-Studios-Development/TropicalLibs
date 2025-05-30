@@ -1,6 +1,7 @@
 package org.tropicalstudios.tropicalLibs.utils;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Statistic;
 import org.bukkit.block.CommandBlock;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -26,5 +27,14 @@ public class HelperUtil {
     // Check how is the code executed (sync/async)
     public static String checkThreadExecution() {
         return Bukkit.isPrimaryThread() ? "SYNC" : "ASYNC";
+    }
+
+    // Get a statistic
+    public static Statistic getStatistic(String name) {
+        try {
+            return Statistic.valueOf(name);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 }
