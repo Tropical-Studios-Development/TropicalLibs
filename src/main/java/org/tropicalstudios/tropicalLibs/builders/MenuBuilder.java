@@ -7,6 +7,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.tropicalstudios.tropicalLibs.Messenger;
 import org.tropicalstudios.tropicalLibs.utils.ChatUtil;
 
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class MenuBuilder {
         if (size % 9 == 0 && size > 0 && size <= 54) {
             this.size = size;
         } else {
-            System.out.println("Invalid inventory size: " + size + ". Using default size 27.");
+            Messenger.warn("Invalid inventory size: " + size + ". Using default size 27");
             this.size = 27;
         }
         return this;
@@ -89,7 +90,7 @@ public class MenuBuilder {
 
     public Inventory build() {
         if (config == null) {
-            System.out.println("Configuration is null, cannot build menu.");
+            Messenger.warn("Configuration is null, cannot build menu!");
             return Bukkit.createInventory(null, 9, "Error");
         }
 
@@ -107,7 +108,7 @@ public class MenuBuilder {
         ConfigurationSection itemsSection = config.getConfigurationSection("items");
 
         if (itemsSection == null) {
-            System.out.println("No items section found in configuration.");
+            Messenger.warn("No items section found in configuration!");
             return;
         }
 
@@ -137,7 +138,7 @@ public class MenuBuilder {
             try {
                 material = Material.valueOf(materialName.toUpperCase());
             } catch (IllegalArgumentException e) {
-                System.out.println("Invalid material: " + materialName + " for item " + key);
+                Messenger.warn("Invalid material: " + materialName + " for item " + key);
                 continue;
             }
 
@@ -179,5 +180,12 @@ public class MenuBuilder {
     // Get current size
     public int getSize() {
         return size;
+    }
+
+    // Static helper method for quick menu opening
+    public static void openMenu(Player player, FileConfiguration config, String targetPlayer) {
+        new MenuBuilder(config)
+                .addPlaceholder("player", targetPlayer)
+                .openFor(player);
     }
 }
