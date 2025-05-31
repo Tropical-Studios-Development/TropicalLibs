@@ -21,6 +21,7 @@ public class MenuBuilder {
     private Inventory inventory;
     private String title;
     private int size;
+    private String targetName;
     private final Map<String, String> placeholders;
 
     public MenuBuilder(FileConfiguration config) {
@@ -28,6 +29,7 @@ public class MenuBuilder {
         this.placeholders = new HashMap<>();
         this.size = 27; // Default size
         this.title = "Menu"; // Default title
+        this.targetName = "";
 
         // Load basic menu properties
         loadMenuProperties();
@@ -42,6 +44,11 @@ public class MenuBuilder {
 
     public MenuBuilder setTitle(String title) {
         this.title = (title != null) ? title : "Menu";
+        return this;
+    }
+
+    public MenuBuilder setTarget(String targetName) {
+        this.targetName = targetName;
         return this;
     }
 
@@ -175,6 +182,7 @@ public class MenuBuilder {
                             .map(ChatUtil::c)
                             .collect(java.util.stream.Collectors.toList()))
                     .setNBT("menu-action", action) // Set action as NBT
+                    .setNBT("target", targetName) // Set target as NBT
                     .build();
 
             // Set the item in all specified slots
