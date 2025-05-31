@@ -127,7 +127,33 @@ public class MenuBuilder {
             if (itemSection.contains("slot")) {
                 slots.add(itemSection.getInt("slot"));
             } else if (itemSection.contains("slots")) {
-                slots = itemSection.getIntegerList("slots");
+                List<String> slotStrings = itemSection.getStringList("slots");
+                for (String slotString : slotStrings) {
+                    if (slotString.contains("-")) {
+                        // Handle range notation (e.g., "0-9")
+                        String[] parts = slotString.split("-");
+                        if (parts.length == 2) {
+                            try {
+                                int start = Integer.parseInt(parts[0].trim());
+                                int end = Integer.parseInt(parts[1].trim());
+                                for (int i = start; i <= end; i++) {
+                                    slots.add(i);
+                                }
+                            } catch (NumberFormatException e) {
+                                Messenger.warn("Invalid slot range: " + slotString + " for item " + key);
+                            }
+                        } else {
+                            Messenger.warn("Invalid slot range format: " + slotString + " for item " + key);
+                        }
+                    } else {
+                        // Handle individual slot numbers
+                        try {
+                            slots.add(Integer.parseInt(slotString.trim()));
+                        } catch (NumberFormatException e) {
+                            Messenger.warn("Invalid slot number: " + slotString + " for item " + key);
+                        }
+                    }
+                }
             }
 
             // Skip items without valid slots or AIR materials
