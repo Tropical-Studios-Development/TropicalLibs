@@ -24,52 +24,96 @@ public class ChatUtil {
 
     private static Map<String, String> customPrefixes = new HashMap<>();
 
+
     public static void setPluginPrefix(String prefix) {
-        String callerClassName = getCallerPluginClassName();
-        System.out.println("DEBUG: Caller class name: " + callerClassName);
+        String callerPluginInfo = getCallerPluginInfo();
+        System.out.println("DEBUG: Caller plugin info: " + callerPluginInfo);
         System.out.println("DEBUG: Prefix value: " + prefix);
 
-        if (callerClassName != null) {
-            // Store by package name instead of exact class name
-            String packageName = getPackageName(callerClassName);
-            customPrefixes.put(packageName, prefix);
-            System.out.println("DEBUG: Stored prefix for package " + packageName);
+        if (callerPluginInfo != null) {
+            customPrefixes.put(callerPluginInfo, prefix);
+            System.out.println("DEBUG: Stored prefix for " + callerPluginInfo);
         } else {
-            Messenger.warn("Could not determine caller plugin class name for prefix: " + prefix);
+            Messenger.warn("Could not determine caller plugin for prefix: " + prefix);
         }
     }
 
     public static String getPrefix() {
-        String callerClassName = getCallerPluginClassName();
-        if (callerClassName != null) {
-            String packageName = getPackageName(callerClassName);
-            return customPrefixes.get(packageName);
+        String callerPluginInfo = getCallerPluginInfo();
+        System.out.println("DEBUG getPrefix: Caller plugin info: " + callerPluginInfo);
+
+        String prefix = customPrefixes.get(callerPluginInfo);
+        if (prefix != null) {
+            return prefix;
         }
+
+        // Fallback: try to find by package name matching
+        for (Map.Entry<String, String> entry : customPrefixes.entrySet()) {
+            if (callerPluginInfo != null && callerPluginInfo.startsWith(entry.getKey().split("\\|")[0])) {
+                System.out.println("DEBUG: Found prefix via package matching: " + entry.getKey());
+                return entry.getValue();
+            }
+        }
+
+        System.out.println("DEBUG: No prefix found, returning empty string");
+        return ""; // Return empty string instead of null to avoid null issues
+    }
+
+    private static String getCallerPluginInfo() {
+        StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+
+        // Debug: Print stack trace for troubleshooting
+        System.out.println("DEBUG: Stack trace analysis:");
+        for (int i = 0; i < Math.min(stack.length, 8); i++) {
+            System.out.println("  [" + i + "] " + stack[i].getClassName() + "." + stack[i].getMethodName());
+        }
+
+        // First, try to find the actual JavaPlugin class in the stack
+        String pluginClassName = null;
+        String firstNonLibraryClass = null;
+
+        for (int i = 3; i < stack.length; i++) {
+            String className = stack[i].getClassName();
+
+            // Skip our library classes
+            if (className.startsWith("org.tropicalstudios.tropicalLibs")) {
+                continue;
+            }
+
+            // Remember the first non-library class we encounter
+            if (firstNonLibraryClass == null) {
+                firstNonLibraryClass = className;
+            }
+
+            try {
+                Class<?> clazz = Class.forName(className);
+                if (org.bukkit.plugin.java.JavaPlugin.class.isAssignableFrom(clazz)) {
+                    pluginClassName = className;
+                    break;
+                }
+            } catch (Exception ignored) {}
+        }
+
+        if (pluginClassName != null) {
+            // We found the actual plugin class, use it with a marker
+            return pluginClassName + "|MAIN";
+        } else if (firstNonLibraryClass != null) {
+            // We didn't find the plugin class, but we have a class from the plugin
+            // Extract the base package name (assuming plugin structure like org.author.pluginname.*)
+            String basePackage = extractBasePackage(firstNonLibraryClass);
+            return basePackage + "|PACKAGE";
+        }
+
         return null;
     }
 
-    private static String getPackageName(String className) {
+    private static String extractBasePackage(String className) {
         String[] parts = className.split("\\.");
         if (parts.length >= 3) {
+            // Return the first 3 parts: org.tropicalstudios.tropicalStaff
             return parts[0] + "." + parts[1] + "." + parts[2];
         }
         return className;
-    }
-
-    private static String getCallerPluginClassName() {
-        StackTraceElement[] stack = Thread.currentThread().getStackTrace();
-        for (int i = 3; i < stack.length; i++) {
-            String className = stack[i].getClassName();
-            if (!className.startsWith("org.tropicalstudios.tropicalLibs")) {
-                try {
-                    Class<?> clazz = Class.forName(className);
-                    if (org.bukkit.plugin.java.JavaPlugin.class.isAssignableFrom(clazz)) {
-                        return className;
-                    }
-                } catch (Exception ignored) {}
-            }
-        }
-        return null;
     }
 
     // Color the messages
