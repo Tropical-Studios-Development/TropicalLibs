@@ -36,8 +36,6 @@ dependencies {
 shadowJar {
     relocate("de.tr7zw.changeme.nbtapi", "org.tropicalstudios.tropicalLibs.nbt")
     archiveClassifier.set(null)
-    destinationDirectory.set(file('C:\\Users\\gamet\\Desktop\\plugins'))
-
 }
 
 def targetJavaVersion = 21
