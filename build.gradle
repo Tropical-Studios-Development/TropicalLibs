@@ -35,50 +35,9 @@ dependencies {
 
 shadowJar {
     relocate("de.tr7zw.changeme.nbtapi", "org.tropicalstudios.tropicalLibs.nbt")
-    archiveClassifier.set("shadow")
-}
+    archiveClassifier.set(null)
+    destinationDirectory.set(file('C:\\Users\\gamet\\Desktop\\plugins'))
 
-tasks.named('build').configure {
-    dependsOn(shadowJar)
-}
-
-def targetLocations = [
-        'C:\\Users\\gamet\\IdeaProjects\\TropicalCore\\libs',
-        'C:\\Users\\gamet\\IdeaProjects\\TropicalPets\\libs',
-        'C:\\Users\\gamet\\IdeaProjects\\TropicalLevels\\libs',
-        'C:\\Users\\gamet\\IdeaProjects\\TropicalChat\\libs',
-        'C:\\Users\\gamet\\IdeaProjects\\AutoReboot\\libs',
-        'C:\\Users\\gamet\\IdeaProjects\\TropicalGiveaway\\libs',
-        'C:\\Users\\gamet\\IdeaProjects\\TropicalBot\\libs',
-        'C:\\Users\\gamet\\IdeaProjects\\TropicalStaff\\libs',
-        'C:\\Users\\gamet\\IdeaProjects\\KlurEffects\\libs',
-        'C:\\Users\\gamet\\IdeaProjects\\EasterEvent\\libs',
-        'C:\\Users\\gamet\\IdeaProjects\\TropicalNick\\libs',
-        'C:\\Users\\gamet\\IdeaProjects\\TropicalEnchants\\libs',
-        'C:\\Users\\gamet\\IdeaProjects\\TropicalExtras\\libs',
-        'C:\\Users\\gamet\\Desktop\\plugins'
-]
-
-targetLocations.eachWithIndex { location, index ->
-    tasks.register("copyJarToLocation${index}", Copy) {
-        from shadowJar
-        into location
-        dependsOn shadowJar
-
-        rename { String fileName ->
-            fileName.replace('-shadow', '')
-        }
-    }
-}
-
-tasks.register('copyToAllLocations') {
-    dependsOn tasks.withType(Copy).matching { task ->
-        task.name.startsWith("copyJarToLocation")
-    }
-}
-
-tasks.named('build').configure {
-    finalizedBy('copyToAllLocations')
 }
 
 def targetJavaVersion = 21

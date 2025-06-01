@@ -13,17 +13,36 @@ import org.tropicalstudios.tropicalLibs.toasts.AdvancementAccessor;
 import org.tropicalstudios.tropicalLibs.toasts.ToastStyle;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ChatUtil {
 
-    // Plugin prefix
-    private static String customPrefix = "";
+    private static Map<String, String> customPrefixes = new HashMap<>();
+    private static String defaultPrefix = "[TropicalLibs]";
 
-    public ChatUtil(String customPrefix) {
-        ChatUtil.customPrefix = customPrefix;
+    public static String getPrefix() {
+        String callerClassName = getCallerPluginClassName();
+        return customPrefixes.getOrDefault(callerClassName, defaultPrefix);
+    }
+
+    private static String getCallerPluginClassName() {
+        StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+        for (int i = 3; i < stack.length; i++) {
+            String className = stack[i].getClassName();
+            if (!className.startsWith("org.tropicalstudios.tropicalLibs")) {
+                try {
+                    Class<?> clazz = Class.forName(className);
+                    if (org.bukkit.plugin.java.JavaPlugin.class.isAssignableFrom(clazz)) {
+                        return className;
+                    }
+                } catch (Exception ignored) {}
+            }
+        }
+        return null;
     }
 
     // Color the messages
@@ -49,7 +68,7 @@ public class ChatUtil {
             return "";
         }
 
-        string = string.replace("%prefix%", customPrefix);
+        string = string.replace("%prefix%", getPrefix());
 
         Matcher matcher = HEX_PATTERN.matcher(string);
         while (matcher.find())

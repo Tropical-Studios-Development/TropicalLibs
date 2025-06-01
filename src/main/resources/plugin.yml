@@ -3,4 +3,5 @@ version: '1.0'
 author: GameTheEnder
 main: org.tropicalstudios.tropicalLibs.TropicalLibs
 api-version: '1.21'
+depend: [NBTAPI]
 description: A library plugin providing utility functions

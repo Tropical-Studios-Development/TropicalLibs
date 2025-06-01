@@ -2,51 +2,63 @@ package org.tropicalstudios.tropicalLibs.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+import org.tropicalstudios.tropicalLibs.TropicalLibs;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PluginUtil {
 
     // Set the plugin instance to the plugin using the lib
     public static void setPluginInstance(Plugin plugin) {
         try {
-            // Get the TropicalLibs class
-            Class<?> libsClass = Class.forName("org.tropicalstudios.tropicalLibs.TropicalLibs");
+            // Register the plugin with TropicalLibs
+            TropicalLibs.registerPlugin(plugin.getClass().getName(), plugin);
 
-            // Get the instance field
-            Field instanceField = libsClass.getDeclaredField("INSTANCE");
-
-            // Get the plugin name field
-            Field nameField = libsClass.getDeclaredField("pluginName");
-
-            // Make it accessible even if it's private
-            instanceField.setAccessible(true);
-            nameField.setAccessible(true);
-
-            // Set your instance
-            instanceField.set(null, plugin);
-            nameField.set(null, plugin.getName());
+            Bukkit.getLogger().info("Successfully registered plugin: " + plugin.getName());
         } catch (Exception e) {
             Bukkit.getLogger().severe("Failed to set plugin instance: " + e.getMessage());
         }
     }
 
-    // Set the plugin prefix
+    // Set the plugin prefix for the calling plugin
     public static void setPluginPrefix(String prefix) {
         try {
-            // Get the ChatUtil class
+            String callerClassName = getCallerPluginClassName();
+
             Class<?> chatUtilClass = Class.forName("org.tropicalstudios.tropicalLibs.utils.ChatUtil");
 
-            // Get the customPrefix field
-            Field customPrefixField = chatUtilClass.getDeclaredField("customPrefix");
-
-            // Make it accessible even if it's private
+            Field customPrefixField = chatUtilClass.getDeclaredField("customPrefixes");
             customPrefixField.setAccessible(true);
 
-            // Set your custom prefix
-            customPrefixField.set(null, prefix);
+            @SuppressWarnings("unchecked")
+            Map<String, String> prefixes = (Map<String, String>) customPrefixField.get(null);
+            if (prefixes == null) {
+                prefixes = new HashMap<>();
+                customPrefixField.set(null, prefixes);
+            }
+
+            prefixes.put(callerClassName, prefix);
+
         } catch (Exception e) {
             Bukkit.getLogger().severe("Failed to set custom prefix: " + e.getMessage());
         }
+    }
+
+    private static String getCallerPluginClassName() {
+        StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+        for (int i = 3; i < stack.length; i++) {
+            String className = stack[i].getClassName();
+            if (!className.startsWith("org.tropicalstudios.tropicalLibs")) {
+                try {
+                    Class<?> clazz = Class.forName(className);
+                    if (org.bukkit.plugin.java.JavaPlugin.class.isAssignableFrom(clazz)) {
+                        return className;
+                    }
+                } catch (Exception ignored) {}
+            }
+        }
+        return null;
     }
 }
