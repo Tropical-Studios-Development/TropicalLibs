@@ -23,19 +23,23 @@ import java.util.regex.Pattern;
 public class ChatUtil {
 
     private static Map<String, String> customPrefixes = new HashMap<>();
-    private static String defaultPrefix = "[TropicalLibs]";
 
     public static void setPluginPrefix(String prefix) {
         String callerClassName = getCallerPluginClassName();
-        if (callerClassName != null)
+        System.out.println("DEBUG: Caller class name: " + callerClassName);
+        System.out.println("DEBUG: Prefix value: " + prefix);
+
+        if (callerClassName != null) {
             customPrefixes.put(callerClassName, prefix);
-        else
+            System.out.println("DEBUG: Stored prefix for " + callerClassName);
+        } else {
             Messenger.warn("Could not determine caller plugin class name for prefix: " + prefix);
+        }
     }
 
     public static String getPrefix() {
         String callerClassName = getCallerPluginClassName();
-        return customPrefixes.getOrDefault(callerClassName, defaultPrefix);
+        return customPrefixes.get(callerClassName);
     }
 
     private static String getCallerPluginClassName() {
