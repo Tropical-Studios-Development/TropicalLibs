@@ -30,8 +30,10 @@ public class ChatUtil {
         System.out.println("DEBUG: Prefix value: " + prefix);
 
         if (callerClassName != null) {
-            customPrefixes.put(callerClassName, prefix);
-            System.out.println("DEBUG: Stored prefix for " + callerClassName);
+            // Store by package name instead of exact class name
+            String packageName = getPackageName(callerClassName);
+            customPrefixes.put(packageName, prefix);
+            System.out.println("DEBUG: Stored prefix for package " + packageName);
         } else {
             Messenger.warn("Could not determine caller plugin class name for prefix: " + prefix);
         }
@@ -39,7 +41,19 @@ public class ChatUtil {
 
     public static String getPrefix() {
         String callerClassName = getCallerPluginClassName();
-        return customPrefixes.get(callerClassName);
+        if (callerClassName != null) {
+            String packageName = getPackageName(callerClassName);
+            return customPrefixes.get(packageName);
+        }
+        return null;
+    }
+
+    private static String getPackageName(String className) {
+        String[] parts = className.split("\\.");
+        if (parts.length >= 3) {
+            return parts[0] + "." + parts[1] + "." + parts[2];
+        }
+        return className;
     }
 
     private static String getCallerPluginClassName() {
