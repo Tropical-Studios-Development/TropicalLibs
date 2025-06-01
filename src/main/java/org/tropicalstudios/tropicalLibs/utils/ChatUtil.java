@@ -48,10 +48,18 @@ public class ChatUtil {
         }
 
         // Fallback: try to find by package name matching
-        for (Map.Entry<String, String> entry : customPrefixes.entrySet()) {
-            if (callerPluginInfo != null && callerPluginInfo.startsWith(entry.getKey().split("\\|")[0])) {
-                System.out.println("DEBUG: Found prefix via package matching: " + entry.getKey());
-                return entry.getValue();
+        if (callerPluginInfo != null) {
+            String callerPackage = callerPluginInfo.split("\\|")[0]; // Get the package part
+            for (Map.Entry<String, String> entry : customPrefixes.entrySet()) {
+                String storedPackage = entry.getKey().split("\\|")[0]; // Get the package part
+
+                // Check if they're from the same plugin (base package match)
+                if (callerPackage.equals(storedPackage) ||
+                        callerPackage.startsWith(storedPackage) ||
+                        storedPackage.startsWith(callerPackage)) {
+                    System.out.println("DEBUG: Found prefix via package matching: " + entry.getKey() + " -> " + callerPluginInfo);
+                    return entry.getValue();
+                }
             }
         }
 
