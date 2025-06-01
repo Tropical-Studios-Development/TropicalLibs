@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
+import org.tropicalstudios.tropicalLibs.Messenger;
 import org.tropicalstudios.tropicalLibs.toasts.AdvancementAccessor;
 import org.tropicalstudios.tropicalLibs.toasts.ToastStyle;
 
@@ -23,6 +24,14 @@ public class ChatUtil {
 
     private static Map<String, String> customPrefixes = new HashMap<>();
     private static String defaultPrefix = "[TropicalLibs]";
+
+    public static void setPluginPrefix(String prefix) {
+        String callerClassName = getCallerPluginClassName();
+        if (callerClassName != null)
+            customPrefixes.put(callerClassName, prefix);
+        else
+            Messenger.warn("Could not determine caller plugin class name for prefix: " + prefix);
+    }
 
     public static String getPrefix() {
         String callerClassName = getCallerPluginClassName();
