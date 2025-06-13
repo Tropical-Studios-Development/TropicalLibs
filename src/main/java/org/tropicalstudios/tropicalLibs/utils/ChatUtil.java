@@ -8,8 +8,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.ClickType;
-import org.tropicalstudios.tropicalLibs.Messenger;
 import org.tropicalstudios.tropicalLibs.toasts.AdvancementAccessor;
 import org.tropicalstudios.tropicalLibs.toasts.ToastStyle;
 

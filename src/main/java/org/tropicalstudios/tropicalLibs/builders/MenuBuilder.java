@@ -10,13 +10,11 @@ import org.bukkit.inventory.ItemStack;
 import org.tropicalstudios.tropicalLibs.Messenger;
 import org.tropicalstudios.tropicalLibs.utils.ChatUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MenuBuilder {
 
+    private static final Map<UUID, MenuBuilder> openMenus = new HashMap<>();
     private final FileConfiguration config;
     private Inventory inventory;
     private String title;
@@ -199,7 +197,20 @@ public class MenuBuilder {
             build();
         }
 
+        registerOpenMenu(player, this);
         player.openInventory(inventory);
+    }
+
+    public static void registerOpenMenu(Player player, MenuBuilder menu) {
+        openMenus.put(player.getUniqueId(), menu);
+    }
+
+    public static MenuBuilder getMenu(Player player) {
+        return openMenus.get(player.getUniqueId());
+    }
+
+    public static void unregisterMenu(Player player) {
+        openMenus.remove(player.getUniqueId());
     }
 
     public Inventory getInventory() {
@@ -214,12 +225,5 @@ public class MenuBuilder {
     // Get current size
     public int getSize() {
         return size;
-    }
-
-    // Static helper method for quick menu opening
-    public static void openMenu(Player player, FileConfiguration config, String targetPlayer) {
-        new MenuBuilder(config)
-                .addPlaceholder("player", targetPlayer)
-                .openFor(player);
     }
 }
