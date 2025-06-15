@@ -54,12 +54,12 @@ public abstract class MenuClick implements Listener {
 
         if (action.startsWith("[broadcast]")) {
             String message = action.substring(11).trim();
-            Messenger.broadcast(message);
+            Messenger.broadcast(message.replace("{player}", target));
         }
 
         if (action.startsWith("[message]")) {
             String message = action.substring(9).trim();
-            player.sendMessage(ChatUtil.c(message));
+            player.sendMessage(ChatUtil.c(message.replace("{player}", target)));
         }
 
         handleAction(event, player, target, action);
