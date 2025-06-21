@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.tropicalstudios.tropicalLibs.convertors.TextConvertor;
 import org.tropicalstudios.tropicalLibs.toasts.AdvancementAccessor;
 import org.tropicalstudios.tropicalLibs.toasts.ToastStyle;
 
@@ -145,6 +146,17 @@ public class ChatUtil {
         message.setUnderlined(underlined);
 
         player.spigot().sendMessage(message);
+    }
+
+    /**
+     * Send a small-caps message to a player
+     *
+     * @param player      The player to send the message to
+     * @param message     The message that should get sent
+     */
+    public static void sendSmallCapsMessage(Player player, String message) {
+        String formattedMessage = TextConvertor.toSmallCaps(message);
+        player.sendMessage(formattedMessage);
     }
 
     // Send toast to player
