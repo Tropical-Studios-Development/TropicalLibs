@@ -7,7 +7,7 @@ import org.tropicalstudios.tropicalLibs.TropicalLibs;
 public class HookUtil {
 
     public static void checkHook(String pluginName) {
-        if (Bukkit.getPluginManager().isPluginEnabled(pluginName)) {
+        if (!Bukkit.getPluginManager().isPluginEnabled(pluginName)) {
             Messenger.warn("Disabled due to no {plugin} dependency found!"
                     .replace("{plugin}", pluginName));
             Bukkit.getPluginManager().disablePlugin(TropicalLibs.getINSTANCE());
