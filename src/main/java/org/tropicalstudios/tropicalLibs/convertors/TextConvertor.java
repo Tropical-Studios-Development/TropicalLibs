@@ -65,6 +65,7 @@ public class TextConvertor {
         SMALL_CAPS_MAP.put('z', 'ᴢ');
     }
 
+    // The text that should be converted to small-caps
     public static String toSmallCaps(String text) {
         StringBuilder result = new StringBuilder();
 

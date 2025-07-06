@@ -19,7 +19,7 @@ public class Messenger {
             player.sendMessage(ChatUtil.c(message));
     }
 
-    // Broadcast message to players with the permission
+    // Broadcast message to players with the specified permission
     public static void broadcastPermission(String permission, String message) {
         for (Player p : PlayerUtil.getOnlinePlayers())
             if (p.hasPermission(permission))

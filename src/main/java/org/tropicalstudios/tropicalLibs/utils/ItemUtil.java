@@ -39,6 +39,7 @@ public class ItemUtil {
         return item == null || item.getType() == Material.AIR;
     }
 
+    // Check if an item is a tool
     public static boolean isTool(ItemStack item) {
         return isSword(item)
                 || isPickaxe(item)
@@ -97,6 +98,7 @@ public class ItemUtil {
         return item.getType() == Material.TRIDENT;
     }
 
+    // Check if an item is a mace
     public static boolean isMace(ItemStack item) {
         return item.getType() == Material.MACE;
     }
@@ -109,22 +111,22 @@ public class ItemUtil {
                 || item.getType().name().endsWith("_BOOTS");
     }
 
-    // Check if an item is helmet
+    // Check if an item is a helmet
     public static boolean isHelmet(ItemStack item) {
         return item.getType().name().endsWith("_HELMET");
     }
 
-    // Check if an item is chestplate
+    // Check if an item is a chestplate
     public static boolean isChestplate(ItemStack item) {
         return item.getType().name().endsWith("_CHESTPLATE");
     }
 
-    // Check if an item is leggings
+    // Check if an item is a legging
     public static boolean isLeggings(ItemStack item) {
         return item.getType().name().endsWith("_LEGGINGS");
     }
 
-    // Check if an item is boots
+    // Check if an item is a boot
     public static boolean isBoots(ItemStack item) {
         return item.getType().name().endsWith("_BOOTS");
     }

@@ -16,7 +16,12 @@ import org.bukkit.entity.Player;
 
 public class RegionUtil {
 
-    // Check if the location is protected (WorldGuard)
+    /**
+     * Check if the location is protected (WorldGuard)
+     *
+     * @param player        The player that should be checked
+     * @param location      The location that should be checked
+     */
     public static boolean isLocationProtected(Player player, Location location) {
 
         if (WorldEditAllow.isPluginEnabled())
@@ -25,7 +30,12 @@ public class RegionUtil {
         return false;
     }
 
-    // Check if player is in a specific region by name
+    /**
+     * Check if a player is in a region
+     *
+     * @param player        The player that should be checked
+     * @param regionName    The region that should be checked
+     */
     public static boolean isInRegion(Player player, String regionName) {
         if (WorldEditAllow.isPluginEnabled())
             return WorldEditAllow.isInRegion(player, regionName);

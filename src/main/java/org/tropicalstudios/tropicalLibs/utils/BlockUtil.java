@@ -12,7 +12,12 @@ import java.util.Random;
 
 public class BlockUtil {
 
-    // Apply fortune logic to the item
+    /**
+     * Apply fortune logic to an item
+     *
+     * @param drops             The drops that fortune to be applied to
+     * @param fortuneLevel      The fortune level
+     */
     public static Collection<ItemStack> applyFortune(Collection<ItemStack> drops, int fortuneLevel) {
         Random rand = new Random();
         Collection<ItemStack> newDrops = new ArrayList<>();
@@ -79,6 +84,7 @@ public class BlockUtil {
                 material == Material.STRIPPED_WARPED_STEM;
     }
 
+    // Get the adjacent blocks of a block
     public static List<Block> getAdjacentBlocks(Block block) {
         List<Block> adjacentBlocks = new ArrayList<>();
         adjacentBlocks.add(block.getRelative(BlockFace.NORTH));

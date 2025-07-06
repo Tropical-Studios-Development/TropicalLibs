@@ -23,12 +23,12 @@ public class ChatUtil {
 
     private static Map<String, String> customPrefixes = new HashMap<>();
 
-    // Color the messages
+    // Color a message (supports HEX color codes)
     public static String c(String message) {
         return ChatColor.translateAlternateColorCodes('&', format(message));
     }
 
-    // Color a list of messages and return them as a colored list
+    // Color a list of messages (supports HEX color codes)
     public static List<String> c(List<String> messages) {
         List<String> coloredMessages = new ArrayList<>();
         for (String s : messages)
@@ -55,13 +55,18 @@ public class ChatUtil {
         return string;
     }
 
-    // Capitalize the first letters of words and replace separators with spaces
-    public static String beautifyName(String input, String separator) {
-        if (input != null && !input.isEmpty()) {
-            if (!input.contains(separator)) {
-                return Character.toUpperCase(input.charAt(0)) + input.substring(1).toLowerCase();
+    /**
+     * Capitalize the first letter of words and replace the separators with spaces
+     *
+     * @param message     The message to be beautified
+     * @param separator   The separator to be replaced
+     */
+    public static String beautifyName(String message, String separator) {
+        if (message != null && !message.isEmpty()) {
+            if (!message.contains(separator)) {
+                return Character.toUpperCase(message.charAt(0)) + message.substring(1).toLowerCase();
             } else {
-                String[] words = input.split(separator);
+                String[] words = message.split(separator);
                 StringBuilder result = new StringBuilder();
 
                 for(int i = 0; i < words.length; ++i) {
@@ -77,22 +82,32 @@ public class ChatUtil {
                 return result.toString();
             }
         } else {
-            return input;
+            return message;
         }
     }
 
-    // Execute command as a player
+    /**
+     * Execute a command as a player
+     *
+     * @param player      The player that should execute the command
+     * @param command     The command to be executed
+     */
     public static void executePlayerCommand(Player player, String command) {
         player.performCommand(command);
     }
 
-    // Execute multiple commands as a player
+    /**
+     * Execute multiple commands a player
+     *
+     * @param player      The player that should execute the commands
+     * @param commands    The commands to be executed
+     */
     public static void executePlayerCommand(Player player, List<String> commands) {
         for (String cmd : commands)
             player.performCommand(cmd);
     }
 
-    // Execute console command
+    // Execute a console command
     public static void executeConsoleCommand(String command) {
         ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
         Bukkit.dispatchCommand(console, command);
@@ -105,22 +120,47 @@ public class ChatUtil {
             Bukkit.dispatchCommand(console, cmd);
     }
 
-    // Send action-bar message to player
+    /**
+     * Send an action-bar message to a player
+     *
+     * @param player      The player that the message should be sent to
+     * @param message     The message to be sent
+     */
     public static void sendActionBarMessage(Player player, String message) {
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacy(ChatUtil.c(message)));
     }
 
-    // Send title to player with custom timings
+    /**
+     * Send a title message to a player (custom timings)
+     *
+     * @param player      The player that the message should be sent to
+     * @param title       The message to be sent
+     * @param subtitle    The subtitle to be sent
+     * @param i1          Fade-in duration (int)
+     * @param i2          How long should the title stay (int)
+     * @param i3          Fade-out duration (int)
+     */
     public static void sendTitle(Player player, String title, String subtitle, int i1, int i2, int i3) {
         player.sendTitle(ChatUtil.c(title), ChatUtil.c(subtitle), i1, i2, i3);
     }
 
-    // Send title to player with predefined timings
+    /**
+     * Send a title message to a player (preset timings)
+     *
+     * @param player        The player that the message should be sent to
+     * @param title         The title to be sent
+     * @param subtitle      The subtitle to be sent
+     */
     public static void sendTitle(Player player, String title, String subtitle) {
         sendTitle(player, title, subtitle, 10, 40, 10);
     }
 
-    // Send title to all online players
+    /**
+     * Send a title message to all online players
+     *
+     * @param title         The title to be sent
+     * @param subtitle      The subtitle to be sent
+     */
     public static void sendTitle(String title, String subtitle) {
         for (Player player : PlayerUtil.getOnlinePlayers())
             sendTitle(player, title, subtitle, 10, 40, 10);
@@ -129,13 +169,13 @@ public class ChatUtil {
     /**
      * Send a clickable message to a player with customizable action type
      *
-     * @param player      The player to send the message to
-     * @param actionType  The type of action (OPEN_URL, RUN_COMMAND, SUGGEST_COMMAND, COPY_TO_CLIPBOARD)
-     * @param text        The text content of the message
-     * @param actionValue The URL or command for the action
-     * @param bold        Whether the text should be bold
-     * @param italic      Whether the text should be italic
-     * @param underlined  Whether the text should be underlined
+     * @param player            The player that the message should be sent to
+     * @param actionType        The type of action (OPEN_URL, RUN_COMMAND, SUGGEST_COMMAND, COPY_TO_CLIPBOARD)
+     * @param text              The text content of the message
+     * @param actionValue       The URL or command for the action
+     * @param bold              Whether the text should be bold
+     * @param italic            Whether the text should be italic
+     * @param underlined        Whether the text should be underlined
      */
     public static void sendClickableMessage(Player player, ClickEvent.Action actionType, String text,
                                             String actionValue, boolean bold, boolean italic, boolean underlined) {
@@ -151,8 +191,8 @@ public class ChatUtil {
     /**
      * Send a small-caps message to a player
      *
-     * @param player      The player to send the message to
-     * @param message     The message that should get sent
+     * @param player        The player to send the message to
+     * @param message       The message to be sent
      */
     public static void sendSmallCapsMessage(Player player, String message) {
         String formattedMessage = TextConvertor.toSmallCaps(message);
