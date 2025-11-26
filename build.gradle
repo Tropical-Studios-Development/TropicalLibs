@@ -31,15 +31,11 @@ dependencies {
     compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.2.15'
     compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.9'
     implementation("de.tr7zw:item-nbt-api:2.15.1")
-
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
 
 shadowJar {
     relocate("de.tr7zw.changeme.nbtapi", "org.tropicalstudios.tropicalLibs.nbt")
     archiveClassifier.set(null)
-
-    destinationDirectory.set(file('C:\\Users\\gamet\\Desktop\\plugins'))
 }
 
 def targetJavaVersion = 21
