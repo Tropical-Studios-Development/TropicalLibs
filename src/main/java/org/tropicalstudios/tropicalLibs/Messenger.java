@@ -45,4 +45,33 @@ public class Messenger {
     public static void severe(String message) {
         Bukkit.getConsoleSender().sendMessage("[" + TropicalLibs.getPluginName() + "] " + ChatUtil.c("&c" + message));
     }
+
+    /**
+     * Logger function for TropicalLibs
+     *
+     * @param level            The log level (color based)
+     * @param message          The message that should be sent in console
+     */
+    public static void log(LogLevel level, String message) {
+        Bukkit.getConsoleSender().sendMessage(
+                "[TropicalLibs] " + level.format(message)
+        );
+    }
+
+    public enum LogLevel {
+        SUCCESS("&a"),
+        INFO("&e"),
+        WARN("&c");
+
+        private final String color;
+
+        LogLevel(String color) {
+            this.color = color;
+        }
+
+        public String format(String message) {
+            return ChatUtil.c(color + message);
+        }
+    }
+
 }

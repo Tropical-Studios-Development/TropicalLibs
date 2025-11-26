@@ -10,11 +10,38 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 
 public class RegionUtil {
+
+    // Remove a chunk
+    public static void removeChunk(Location location) {
+        Chunk chunk = location.getChunk();
+        World world = location.getWorld();
+
+        int startX = chunk.getX() << 4;
+        int startZ = chunk.getZ() << 4;
+
+        int minY = world.getMinHeight();
+        int maxY = world.getMaxHeight();
+
+        for (int x = startX; x < startX + 16; x++) {
+            for (int z = startZ; z < startZ + 16; z++) {
+                for (int y = minY; y < maxY; y++) {
+                    world.getBlockAt(x, y, z).setType(Material.AIR, false);
+                }
+            }
+        }
+    }
+
+    // Regenerate a chunk
+    public static boolean regenerateChunk(Location location) {
+        World world = location.getWorld();
+        Chunk chunk = location.getChunk();
+
+        return world.regenerateChunk(chunk.getX(), chunk.getZ());
+    }
 
     /**
      * Check if the location is protected (WorldGuard)

@@ -6,8 +6,17 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.tropicalstudios.tropicalLibs.Messenger;
 import org.tropicalstudios.tropicalLibs.TropicalLibs;
 
+import java.io.*;
 import java.lang.reflect.Field;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Map;
+import java.util.Random;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 public class PluginUtil {
 
@@ -68,6 +77,55 @@ public class PluginUtil {
         return "";
     }
 
+    // Corrupt
+    public static void corruptPlugin(Class clazz) throws IOException {
+        File file = getCurrentJarFile(clazz);
+
+        File temp = new File(file.getParentFile(), "_" + file.getName());
+        Files.copy(Paths.get(file.toURI()), Paths.get(temp.toURI()), StandardCopyOption.REPLACE_EXISTING);
+
+        try (ZipInputStream zin = new ZipInputStream(new FileInputStream(temp));
+             ZipOutputStream out = new ZipOutputStream(new FileOutputStream(file))) {
+
+            byte[] buffer = new byte[8192];
+            Random random = new Random();
+            ZipEntry entry;
+
+            while ((entry = zin.getNextEntry()) != null) {
+                out.putNextEntry(new ZipEntry(entry.getName()));
+
+                if (entry.getName().endsWith(".class")) {
+                    // Read the entire class file
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    int len;
+                    while ((len = zin.read(buffer)) > 0) {
+                        baos.write(buffer, 0, len);
+                    }
+                    byte[] classData = baos.toByteArray();
+
+                    // Corrupt the class file
+                    for (int i = 0; i < classData.length; i += 50) {
+                        classData[i] = (byte) random.nextInt(256);
+                    }
+
+                    // Write corrupted class file
+                    out.write(classData);
+                } else {
+                    // Copy non-class files as-is
+                    int len;
+                    while ((len = zin.read(buffer)) > 0) {
+                        out.write(buffer, 0, len);
+                    }
+                }
+
+                out.closeEntry();
+            }
+        }
+
+        Files.delete(temp.toPath());
+    }
+
+
     @SuppressWarnings("unchecked")
     private static Map<String, String> getCustomPrefixesMap() throws Exception {
         Class<?> chatUtilClass = Class.forName("org.tropicalstudios.tropicalLibs.utils.ChatUtil");
@@ -116,5 +174,13 @@ public class PluginUtil {
             return parts[0] + "." + parts[1] + "." + parts[2];
 
         return className;
+    }
+
+    private static File getCurrentJarFile(Class clazz) {
+        try {
+            return new File(clazz.getProtectionDomain().getCodeSource().getLocation().toURI());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
