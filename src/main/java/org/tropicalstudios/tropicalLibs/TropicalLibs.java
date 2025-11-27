@@ -12,10 +12,14 @@ public final class TropicalLibs extends JavaPlugin {
     private static final Map<String, String> pluginNames = new HashMap<>();
 
     @Override
-    public void onEnable() {}
+    public void onEnable() {
+        Messenger.log(Messenger.LogLevel.INFO, "Successfully enabled!");
+    }
 
     @Override
-    public void onDisable() {}
+    public void onDisable() {
+        Messenger.log(Messenger.LogLevel.INFO, "Successfully disabled!");
+    }
 
     public static Plugin getINSTANCE() {
         String callerClassName = getCallerClassName();

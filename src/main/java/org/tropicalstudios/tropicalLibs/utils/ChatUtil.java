@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.tropicalstudios.tropicalLibs.Messenger;
 import org.tropicalstudios.tropicalLibs.convertors.TextConvertor;
 import org.tropicalstudios.tropicalLibs.toasts.AdvancementAccessor;
 import org.tropicalstudios.tropicalLibs.toasts.ToastStyle;
@@ -127,6 +128,11 @@ public class ChatUtil {
      * @param message     The message to be sent
      */
     public static void sendActionBarMessage(Player player, String message) {
+        if (!VersionUtil.supportsFeature(VersionUtil.Feature.ACTION_BAR)) {
+            Messenger.log(Messenger.LogLevel.WARN, "Not supported in current version!");
+            return;
+        }
+
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacy(ChatUtil.c(message)));
     }
 
@@ -136,11 +142,16 @@ public class ChatUtil {
      * @param player      The player that the message should be sent to
      * @param title       The message to be sent
      * @param subtitle    The subtitle to be sent
-     * @param i1          Fade-in duration (int)
-     * @param i2          How long should the title stay (int)
-     * @param i3          Fade-out duration (int)
+     * @param i1          Fade-in duration
+     * @param i2          How long should the title stay
+     * @param i3          Fade-out duration
      */
     public static void sendTitle(Player player, String title, String subtitle, int i1, int i2, int i3) {
+        if (!VersionUtil.supportsFeature(VersionUtil.Feature.TITLE)) {
+            Messenger.log(Messenger.LogLevel.WARN, "Not supported in current version!");
+            return;
+        }
+
         player.sendTitle(ChatUtil.c(title), ChatUtil.c(subtitle), i1, i2, i3);
     }
 
@@ -179,6 +190,11 @@ public class ChatUtil {
      */
     public static void sendClickableMessage(Player player, ClickEvent.Action actionType, String text,
                                             String actionValue, boolean bold, boolean italic, boolean underlined) {
+        if (!VersionUtil.supportsFeature(VersionUtil.Feature.CLICKABLE_MESSAGES)) {
+            Messenger.log(Messenger.LogLevel.WARN, "Not supported in current version!");
+            return;
+        }
+
         TextComponent message = new TextComponent(text);
         message.setClickEvent(new ClickEvent(actionType, actionValue));
         message.setBold(bold);

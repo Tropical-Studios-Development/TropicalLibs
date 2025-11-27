@@ -11,36 +11,82 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.tropicalstudios.tropicalLibs.schedulers.TropicalScheduler;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RegionUtil {
 
-    // Remove a chunk
-    public static void removeChunk(Location location) {
-        Chunk chunk = location.getChunk();
-        World world = location.getWorld();
+    /**
+     * Remove all blocks in a chunk
+     *
+     * @param location       The location where the chunk is
+     * @param limit          Should it keep the last layer of the chunk (bedrock)
+     */
+    public static void removeChunk(Location location, boolean limit) {
+        TropicalScheduler.async().run(() -> {
+            Chunk chunk = location.getChunk();
+            World world = location.getWorld();
 
-        int startX = chunk.getX() << 4;
-        int startZ = chunk.getZ() << 4;
+            int startX = chunk.getX() << 4;
+            int startZ = chunk.getZ() << 4;
 
-        int minY = world.getMinHeight();
-        int maxY = world.getMaxHeight();
+            int minY = world.getMinHeight() + 1;
+            int maxY = world.getMaxHeight();
 
-        for (int x = startX; x < startX + 16; x++) {
-            for (int z = startZ; z < startZ + 16; z++) {
-                for (int y = minY; y < maxY; y++) {
-                    world.getBlockAt(x, y, z).setType(Material.AIR, false);
+            List<Block> toClear = new ArrayList<>(16 * 16 * (maxY - minY));
+
+            for (int x = startX; x < startX + 16; x++) {
+                for (int z = startZ; z < startZ + 16; z++) {
+
+                    for (int y = minY; y < maxY; y++) {
+                        Block block = world.getBlockAt(x, y, z);
+                        toClear.add(block);
+                    }
                 }
             }
-        }
+
+            TropicalScheduler.sync().run(() -> {
+                for (Block block : toClear) {
+                    block.setType(Material.AIR, false);
+                }
+            });
+        });
     }
 
     // Regenerate a chunk
-    public static boolean regenerateChunk(Location location) {
+    public static void regenerateChunk(Location location) {
         World world = location.getWorld();
         Chunk chunk = location.getChunk();
 
-        return world.regenerateChunk(chunk.getX(), chunk.getZ());
+        int cx = chunk.getX();
+        int cz = chunk.getZ();
+
+        world.unloadChunk(cx, cz, true);
+        deleteChunkFromDisk(world, cx, cz);
+        world.getChunkAt(cx, cz, true);
+    }
+
+    // Delete the chunk from the world folder
+    private static void deleteChunkFromDisk(World world, int chunkX, int chunkZ) {
+        File worldFolder = world.getWorldFolder();
+
+        // Region coordinates (32x32 chunks per file)
+        int regionX = chunkX >> 5;
+        int regionZ = chunkZ >> 5;
+
+        File regionFile = new File(
+                worldFolder,
+                "region" + File.separator + "r." + regionX + "." + regionZ + ".mca"
+        );
+
+        if (regionFile.exists()) {
+            regionFile.delete();
+        }
     }
 
     /**
