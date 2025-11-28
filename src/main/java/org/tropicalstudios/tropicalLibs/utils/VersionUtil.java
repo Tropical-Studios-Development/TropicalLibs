@@ -138,7 +138,8 @@ public class VersionUtil {
         TITLE(V.v1_8),
         SUBTITLE(V.v1_8),
         BOSSBAR_API(V.v1_9),
-        CLICKABLE_MESSAGES(V.v1_7);
+        CLICKABLE_MESSAGES(V.v1_7),
+        HEX(V.v1_16);
 
         private final V since;
 

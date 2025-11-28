@@ -24,7 +24,7 @@ public class ChatUtil {
 
     private static Map<String, String> customPrefixes = new HashMap<>();
 
-    // Color a message (supports HEX color codes)
+    // Color a message (supports HEX color codes if available)
     public static String c(String message) {
         return ChatColor.translateAlternateColorCodes('&', format(message));
     }
@@ -48,12 +48,76 @@ public class ChatUtil {
         }
 
         string = string.replace("%prefix%", PluginUtil.getPluginPrefix());
-
         Matcher matcher = HEX_PATTERN.matcher(string);
-        while (matcher.find())
-            string = string.replace(matcher.group(),
-                    "" + net.md_5.bungee.api.ChatColor.of(matcher.group().replace("&", "")));
+
+        if (VersionUtil.supportsFeature(VersionUtil.Feature.HEX)) {
+            while (matcher.find())
+                string = string.replace(matcher.group(),
+                        "" + net.md_5.bungee.api.ChatColor.of(matcher.group().replace("&", "")));
+        }
+        else {
+            while (matcher.find()) {
+                String hexCode = matcher.group(1); // Gets #RRGGBB
+                ChatColor nearest = getNearestChatColor(hexCode);
+                string = string.replace(matcher.group(), nearest.toString());
+            }
+        }
+
         return string;
+    }
+
+    // Convert HEX color to nearest ChatColor
+    private static ChatColor getNearestChatColor(String hex) {
+        int rgb = Integer.parseInt(hex.substring(1), 16);
+        int r = (rgb >> 16) & 0xFF;
+        int g = (rgb >> 8) & 0xFF;
+        int b = rgb & 0xFF;
+
+        ChatColor nearest = ChatColor.WHITE;
+        double minDistance = Double.MAX_VALUE;
+
+        for (ChatColor color : ChatColor.values()) {
+            if (color.isFormat() || color == ChatColor.RESET) continue;
+
+            int[] colorRgb = getColorRgb(color);
+            if (colorRgb == null) continue;
+
+            double distance = Math.sqrt(
+                    Math.pow(r - colorRgb[0], 2) +
+                            Math.pow(g - colorRgb[1], 2) +
+                            Math.pow(b - colorRgb[2], 2)
+            );
+
+            if (distance < minDistance) {
+                minDistance = distance;
+                nearest = color;
+            }
+        }
+
+        return nearest;
+    }
+
+    // Get RGB values for ChatColor
+    private static int[] getColorRgb(ChatColor color) {
+        switch (color) {
+            case BLACK: return new int[]{0, 0, 0};
+            case DARK_BLUE: return new int[]{0, 0, 170};
+            case DARK_GREEN: return new int[]{0, 170, 0};
+            case DARK_AQUA: return new int[]{0, 170, 170};
+            case DARK_RED: return new int[]{170, 0, 0};
+            case DARK_PURPLE: return new int[]{170, 0, 170};
+            case GOLD: return new int[]{255, 170, 0};
+            case GRAY: return new int[]{170, 170, 170};
+            case DARK_GRAY: return new int[]{85, 85, 85};
+            case BLUE: return new int[]{85, 85, 255};
+            case GREEN: return new int[]{85, 255, 85};
+            case AQUA: return new int[]{85, 255, 255};
+            case RED: return new int[]{255, 85, 85};
+            case LIGHT_PURPLE: return new int[]{255, 85, 255};
+            case YELLOW: return new int[]{255, 255, 85};
+            case WHITE: return new int[]{255, 255, 255};
+            default: return null;
+        }
     }
 
     /**

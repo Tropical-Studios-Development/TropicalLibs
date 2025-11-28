@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
+import org.tropicalstudios.tropicalLibs.Messenger;
 
 import java.util.Collection;
 
@@ -16,6 +17,11 @@ public class PlayerUtil {
 
     // Format the ping of a player
     public static String getPing(Player player) {
+        if (!VersionUtil.atLeast(VersionUtil.V.v1_17)) {
+            Messenger.log(Messenger.LogLevel.WARN, "Not supported in current version!");
+            return "";
+        }
+
         int ping =  player.getPing();
         return (ping <= 80) ? "&a" + ping :
                 (ping <= 160) ? "&6" + ping :
