@@ -27,31 +27,37 @@ public class ChatUtil {
 
     private static Map<String, String> customPrefixes = new HashMap<>();
     private static final MiniMessage MINI = MiniMessage.miniMessage();
+    private static final Pattern HEX_PATTERN = Pattern.compile("&(#[A-Fa-f0-9]{6})");
 
-    // Color a message (supports HEX color codes if available)
+    // Color a message
     public static String c(String message) {
+        if (message == null)
+            return "";
+
+        message = message.replace("%prefix%", PluginUtil.getPluginPrefix());
+        if (containsMiniMessageTags(message)) {
+            Component component = MINI.deserialize(message);
+            return LegacyComponentSerializer.legacySection().serialize(component);
+        }
+
         return ChatColor.translateAlternateColorCodes('&', format(message));
     }
 
-    // Color a list of messages (supports HEX color codes)
+    // Color a list of messages
     public static List<String> c(List<String> messages) {
         List<String> coloredMessages = new ArrayList<>();
         for (String s : messages)
-            coloredMessages.add(ChatColor.translateAlternateColorCodes('&', format(s)));
+            coloredMessages.add(c(s));
+
         return coloredMessages;
     }
-    // Color a message (Using MiniMessage format)
-    public static Component ccMini(String input) {
-        if (input == null)
-            return Component.empty();
 
-        return MINI.deserialize(input);
+    // Check if string contains MiniMessage tags
+    private static boolean containsMiniMessageTags(String message) {
+        return message.contains("<") && message.contains(">");
     }
 
-    // Check for HEX pattern
-    private static final Pattern HEX_PATTERN = Pattern.compile("&(#[A-Fa-f0-9]{6})");
-
-    // Format the string
+    // Format HEX color codes
     private static String format(String string) {
         // Return empty string if input is null
         if (string == null) {
