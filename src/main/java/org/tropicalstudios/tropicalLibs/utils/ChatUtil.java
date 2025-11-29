@@ -59,7 +59,6 @@ public class ChatUtil {
 
     // Format HEX color codes
     private static String format(String string) {
-        // Return empty string if input is null
         if (string == null) {
             return "";
         }
