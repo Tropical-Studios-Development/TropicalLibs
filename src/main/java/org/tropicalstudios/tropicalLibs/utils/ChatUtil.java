@@ -27,11 +27,6 @@ public class ChatUtil {
 
     private static Map<String, String> customPrefixes = new HashMap<>();
     private static final MiniMessage MINI = MiniMessage.miniMessage();
-    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.builder()
-            .character('&')
-            .hexColors()
-            .useUnusualXRepeatedCharacterHexFormat()
-            .build();
 
     // Color a message (supports HEX color codes if available)
     public static String c(String message) {
@@ -45,22 +40,12 @@ public class ChatUtil {
             coloredMessages.add(ChatColor.translateAlternateColorCodes('&', format(s)));
         return coloredMessages;
     }
-
-    // === NEW: PUBLIC API for COMPONENTS (legacy + MiniMessage) ===
-    public static Component cc(String input) {
+    // Color a message (Using MiniMessage format)
+    public static Component ccMini(String input) {
         if (input == null)
             return Component.empty();
 
-        input = format(input);
-        if (looksLikeMiniMessage(input))
-            return MINI.deserialize(input);
-
-        return LEGACY.deserialize(input);
-    }
-
-    // Simple MiniMessage tag detection
-    private static boolean looksLikeMiniMessage(String s) {
-        return s.contains("<") && s.contains(">");
+        return MINI.deserialize(input);
     }
 
     // Check for HEX pattern
