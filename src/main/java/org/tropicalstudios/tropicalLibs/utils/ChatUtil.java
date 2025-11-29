@@ -36,12 +36,11 @@ public class ChatUtil {
 
         message = message.replace("%prefix%", PluginUtil.getPluginPrefix());
         if (containsMiniMessageTags(message)) {
-            message = legacyToMiniMessage(message);
             Component component = MINI.deserialize(message);
             return LegacyComponentSerializer.legacySection().serialize(component);
         }
 
-        return ChatColor.translateAlternateColorCodes('&', formatHex(message));
+        return ChatColor.translateAlternateColorCodes('&', format(message));
     }
 
     // Color a list of messages
@@ -58,50 +57,23 @@ public class ChatUtil {
         return message.contains("<") && message.contains(">");
     }
 
-    // Format HEX colors
-    private static String formatHex(String string) {
-        if (string == null)
+    // Format HEX color codes
+    private static String format(String string) {
+        // Return empty string if input is null
+        if (string == null) {
             return "";
+        }
 
+        string = string.replace("%prefix%", PluginUtil.getPluginPrefix());
         Matcher matcher = HEX_PATTERN.matcher(string);
+
         if (VersionUtil.supportsFeature(VersionUtil.Feature.HEX)) {
-            while (matcher.find()) {
+            while (matcher.find())
                 string = string.replace(matcher.group(),
                         "" + net.md_5.bungee.api.ChatColor.of(matcher.group().replace("&", "")));
-            }
         }
 
         return string;
-    }
-
-    // Convert legacy codes to MiniMessage format
-    private static String legacyToMiniMessage(String message) {
-        // Convert HEX codes: &#RRGGBB -> <color:#RRGGBB>
-        Matcher hexMatcher = HEX_PATTERN.matcher(message);
-        while (hexMatcher.find()) {
-            String hex = hexMatcher.group(1); // Gets #RRGGBB
-            message = message.replace("&" + hex, "<color:" + hex + ">");
-        }
-
-        // Convert standard color codes
-        message = message.replace("&0", "<black>").replace("&1", "<dark_blue>")
-                .replace("&2", "<dark_green>").replace("&3", "<dark_aqua>")
-                .replace("&4", "<dark_red>").replace("&5", "<dark_purple>")
-                .replace("&6", "<gold>").replace("&7", "<gray>")
-                .replace("&8", "<dark_gray>").replace("&9", "<blue>")
-                .replace("&a", "<green>").replace("&b", "<aqua>")
-                .replace("&c", "<red>").replace("&d", "<light_purple>")
-                .replace("&e", "<yellow>").replace("&f", "<white>");
-
-        // Convert formatting codes
-        message = message.replace("&k", "<obfuscated>")
-                .replace("&l", "<bold>")
-                .replace("&m", "<strikethrough>")
-                .replace("&n", "<underlined>")
-                .replace("&o", "<italic>")
-                .replace("&r", "<reset>");
-
-        return message;
     }
 
     /**
