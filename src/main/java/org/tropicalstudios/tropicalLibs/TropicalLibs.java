@@ -8,11 +8,13 @@ import java.util.Map;
 
 public final class TropicalLibs extends JavaPlugin {
 
+    private static TropicalLibs self;
     private static final Map<String, Plugin> pluginInstances = new HashMap<>();
     private static final Map<String, String> pluginNames = new HashMap<>();
 
     @Override
     public void onEnable() {
+        self = this;
         Messenger.log(Messenger.LogLevel.INFO, "Successfully enabled!");
     }
 
@@ -23,12 +25,24 @@ public final class TropicalLibs extends JavaPlugin {
 
     public static Plugin getINSTANCE() {
         String callerClassName = getCallerClassName();
-        return pluginInstances.get(callerClassName);
+        Plugin plugin = (callerClassName != null) ? pluginInstances.get(callerClassName) : null;
+
+        // If detection failed, fall back to TropicalLibs plugin itself
+        if (plugin == null)
+            return TropicalLibs.self;
+
+        return plugin;
     }
 
     public static String getPluginName() {
         String callerClassName = getCallerClassName();
-        return pluginNames.get(callerClassName);
+        String name = (callerClassName != null) ? pluginNames.get(callerClassName) : null;
+
+        // Fallback to TropicalLibs if detection fails
+        if (name == null)
+            return TropicalLibs.self.getName();
+
+        return name;
     }
 
     public static void registerPlugin(String pluginClassName, Plugin plugin) {
