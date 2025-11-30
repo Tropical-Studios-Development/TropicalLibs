@@ -29,7 +29,7 @@ public class ChatUtil {
     private static final MiniMessage MINI = MiniMessage.miniMessage();
     private static final Pattern HEX_PATTERN = Pattern.compile("&(#[A-Fa-f0-9]{6})");
 
-    // Color a message
+    // Color a message (Supports Legacy & MiniMessage)
     public static String c(String message) {
         if (message == null)
             return "";
@@ -50,6 +50,14 @@ public class ChatUtil {
             coloredMessages.add(c(s));
 
         return coloredMessages;
+    }
+
+    // Format component for MiniMessage
+    public static Component mm(String message) {
+        if (message == null)
+            return Component.empty();
+
+        return MINI.deserialize(message);
     }
 
     // Check if string contains MiniMessage tags
