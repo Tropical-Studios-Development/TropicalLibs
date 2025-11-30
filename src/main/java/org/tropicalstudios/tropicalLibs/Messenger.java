@@ -10,11 +10,11 @@ import org.tropicalstudios.tropicalLibs.utils.PlayerUtil;
 public class Messenger {
 
     // Send a message with MiniMessage format
-    public static void sendMM(CommandSender sender, String message) {
+    public static void sendMessage(CommandSender sender, String message) {
         if (sender == null || message == null)
             return;
 
-        Audience audience = (Audience) sender;
+        Audience audience = TropicalLibs.getAudiences().sender(sender);
         audience.sendMessage(ChatUtil.mm(message));
     }
 

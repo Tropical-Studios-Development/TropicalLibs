@@ -1,5 +1,6 @@
 package org.tropicalstudios.tropicalLibs;
 
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -9,18 +10,26 @@ import java.util.Map;
 public final class TropicalLibs extends JavaPlugin {
 
     private static TropicalLibs self;
+    private static BukkitAudiences audiences;
     private static final Map<String, Plugin> pluginInstances = new HashMap<>();
     private static final Map<String, String> pluginNames = new HashMap<>();
 
     @Override
     public void onEnable() {
         self = this;
+        audiences = BukkitAudiences.create(this);
         Messenger.log(Messenger.LogLevel.INFO, "Successfully enabled!");
     }
 
     @Override
     public void onDisable() {
+        if (audiences != null)
+            audiences.close();
         Messenger.log(Messenger.LogLevel.INFO, "Successfully disabled!");
+    }
+
+    public static BukkitAudiences getAudiences() {
+        return audiences;
     }
 
     public static Plugin getINSTANCE() {
