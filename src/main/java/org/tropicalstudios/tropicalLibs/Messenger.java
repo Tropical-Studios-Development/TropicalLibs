@@ -1,11 +1,22 @@
 package org.tropicalstudios.tropicalLibs;
 
+import net.kyori.adventure.audience.Audience;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.tropicalstudios.tropicalLibs.utils.ChatUtil;
 import org.tropicalstudios.tropicalLibs.utils.PlayerUtil;
 
 public class Messenger {
+
+    // Send a message with MiniMessage format
+    public static void sendMM(CommandSender sender, String message) {
+        if (sender == null || message == null)
+            return;
+
+        Audience audience = (Audience) sender;
+        audience.sendMessage(ChatUtil.mm(message));
+    }
 
     // Broadcast message to all online players
     public static void broadcast(String message) {
