@@ -11,7 +11,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class ItemUtil {
 
-    // Apply durability loss
+    /**
+     * Apply one point of durability loss to the given item held by the player
+     *
+     * Respects Creative mode (no damage) and the Unbreaking enchantment chance
+     * Plays the break sound and removes the item if it reaches max durability
+     *
+     * @param player the owning player (used for game mode and sounds)
+     * @param item   the item to damage
+     */
     public static void applyDurabilityLoss(Player player, ItemStack item) {
 
         if (player.getGameMode() == GameMode.CREATIVE)
@@ -34,12 +42,20 @@ public class ItemUtil {
         }
     }
 
-    // Check if an item is null
+    /**
+     * Check whether an item is null or air
+     *
+     * @param item the item to test
+     */
     public static boolean isNull(ItemStack item) {
         return item == null || item.getType() == Material.AIR;
     }
 
-    // Check if an item is a tool
+    /**
+     * Check whether the item is any common tool or weapon type
+     *
+     * @param item the item to test
+     */
     public static boolean isTool(ItemStack item) {
         return isSword(item)
                 || isPickaxe(item)
@@ -53,57 +69,101 @@ public class ItemUtil {
                 || isShield(item);
     }
 
-    // Check if an item is a sword
+    /**
+     * Check whether the item is a sword
+     *
+     * @param item the item to test
+     */
     public static boolean isSword(ItemStack item) {
         return item.getType().name().endsWith("_SWORD");
     }
 
-    // Check if an item is a pickaxe
+    /**
+     * Check whether the item is a pickaxe
+     *
+     * @param item the item to test
+     */
     public static boolean isPickaxe(ItemStack item) {
         return item.getType().name().endsWith("_PICKAXE");
     }
 
-    // Check if an item is an axe
+    /**
+     * Check whether the item is an axe
+     *
+     * @param item the item to test
+     */
     public static boolean isAxe(ItemStack item) {
         return item.getType().name().endsWith("_AXE");
     }
 
-    // Check if an item is a shovel
+    /**
+     * Check whether the item is a shovel
+     *
+     * @param item the item to test
+     */
     public static boolean isShovel(ItemStack item) {
         return item.getType().name().endsWith("_SHOVEL");
     }
 
-    // Check if an item is a hoe
+    /**
+     * Check whether the item is a hoe
+     *
+     * @param item the item to test
+     */
     public static boolean isHoe(ItemStack item) {
         return item.getType().name().endsWith("_HOE");
     }
 
-    // Check if an item is a bow
+    /**
+     * Check whether the item is a bow
+     *
+     * @param item the item to test
+     */
     public static boolean isBow(ItemStack item) {
         return item.getType() == Material.BOW;
     }
 
-    // Check if an item is a fishing rod
+    /**
+     * Check whether the item is a fishing rod
+     *
+     * @param item the item to test
+     */
     public static boolean isFishingRod(ItemStack item) {
         return item.getType() == Material.FISHING_ROD;
     }
 
-    // Check if an item is a shield
+    /**
+        * Check whether the item is a shield
+        *
+        * @param item the item to test
+        */
     public static boolean isShield(ItemStack item) {
         return item.getType() == Material.SHIELD;
     }
 
-    // Check if an item is a trident
+    /**
+     * Check whether the item is a trident
+     *
+     * @param item the item to test
+     */
     public static boolean isTrident(ItemStack item) {
         return item.getType() == Material.TRIDENT;
     }
 
-    // Check if an item is a mace
+    /**
+     * Check whether the item is a mace
+     *
+     * @param item the item to test
+     */
     public static boolean isMace(ItemStack item) {
         return item.getType() == Material.MACE;
     }
 
-    // Check if an item is armor
+    /**
+     * Check whether the item is a piece of armor
+     *
+     * @param item the item to test
+     */
     public static boolean isArmor(ItemStack item) {
         return item.getType().name().endsWith("_HELMET")
                 || item.getType().name().endsWith("_CHESTPLATE")
@@ -111,22 +171,38 @@ public class ItemUtil {
                 || item.getType().name().endsWith("_BOOTS");
     }
 
-    // Check if an item is a helmet
+    /**
+     * Check whether the item is a helmet
+     *
+     * @param item the item to test
+     */
     public static boolean isHelmet(ItemStack item) {
         return item.getType().name().endsWith("_HELMET");
     }
 
-    // Check if an item is a chestplate
+    /**
+     * Check whether the item is a chestplate
+     *
+     * @param item the item to test
+     */
     public static boolean isChestplate(ItemStack item) {
         return item.getType().name().endsWith("_CHESTPLATE");
     }
 
-    // Check if an item is a legging
+    /**
+     * Check whether the item is a pair of leggings
+     *
+     * @param item the item to test
+     */
     public static boolean isLeggings(ItemStack item) {
         return item.getType().name().endsWith("_LEGGINGS");
     }
 
-    // Check if an item is a boot
+    /**
+     * Check whether the item is a pair of boots
+     *
+     * @param item the item to test
+     */
     public static boolean isBoots(ItemStack item) {
         return item.getType().name().endsWith("_BOOTS");
     }

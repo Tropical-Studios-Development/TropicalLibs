@@ -6,45 +6,64 @@ import org.tropicalstudios.tropicalLibs.TropicalLibs;
 
 public class HookUtil {
 
-    // Check if a plugin is enabled
+    /**
+     * Verify that a required plugin is enabled
+     *
+     * Logs a warning and disables TropicalLibs if the dependency is missing;
+     * otherwise logs a successful hook message
+     *
+     * @param pluginName the name of the dependency to check
+     */
     public static void checkHook(String pluginName) {
         if (!Bukkit.getPluginManager().isPluginEnabled(pluginName)) {
-            Messenger.warn("Disabled due to no {plugin} dependency found!"
+            Messenger.log(Messenger.LogLevel.WARN, "Disabled due to no {plugin} dependency found!"
                     .replace("{plugin}", pluginName));
             Bukkit.getPluginManager().disablePlugin(TropicalLibs.getINSTANCE());
             return;
         }
-        Messenger.info("Successfully hooked into {plugin}"
+        Messenger.log(Messenger.LogLevel.INFO, "Successfully hooked into {plugin}"
                 .replace("{plugin}", pluginName));
     }
 
-    // Check if PlaceholderAPI is enabled
+    /**
+     * Ensure PlaceholderAPI is present and enabled
+     *
+     * Disables TropicalLibs when absent; logs a success message when available
+     */
     public static void checkPAPI() {
         if (!Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            Messenger.warn("Disabled due to no PlaceholderAPI dependency found!");
+            Messenger.log(Messenger.LogLevel.WARN, "Disabled due to no PlaceholderAPI dependency found!");
             Bukkit.getPluginManager().disablePlugin(TropicalLibs.getINSTANCE());
             return;
         }
-        Messenger.info("Successfully hooked into PlaceholderAPI");
+        Messenger.log(Messenger.LogLevel.INFO, "Successfully hooked into PlaceholderAPI");
     }
 
-    // Check if NBTAPI is enabled
+    /**
+     * Ensure NBTAPI is present and enabled
+     *
+     * Disables TropicalLibs when absent; logs a success message when available
+     */
     public static void checkNBT() {
         if (!Bukkit.getPluginManager().isPluginEnabled("NBTAPI")) {
-            Messenger.warn("Disabled due to no NBTAPI dependency found!");
+            Messenger.log(Messenger.LogLevel.WARN, "Disabled due to no NBTAPI dependency found!");
             Bukkit.getPluginManager().disablePlugin(TropicalLibs.getINSTANCE());
             return;
         }
-        Messenger.info("Successfully hooked into NBTAPI");
+        Messenger.log(Messenger.LogLevel.INFO, "Successfully hooked into NBTAPI");
     }
 
-    // Check if Vault is enabled
+    /**
+     * Ensure Vault is present and enabled
+     *
+     * Disables TropicalLibs when absent; logs a success message when available
+     */
     public static void checkVault() {
         if (!Bukkit.getPluginManager().isPluginEnabled("Vault")) {
-            Messenger.warn("Disabled due to no Vault dependency found!");
+            Messenger.log(Messenger.LogLevel.WARN, "Disabled due to no Vault dependency found!");
             Bukkit.getPluginManager().disablePlugin(TropicalLibs.getINSTANCE());
             return;
         }
-        Messenger.info("Successfully hooked into Vault");
+        Messenger.log(Messenger.LogLevel.INFO, "Successfully hooked into Vault");
     }
 }

@@ -64,8 +64,17 @@ public class TextConvertor {
         SMALL_CAPS_MAP.put('y', 'ʏ');
         SMALL_CAPS_MAP.put('z', 'ᴢ');
     }
-
-    // The text that should be converted to small-caps
+    
+    /**
+     * Convert a string to small-caps using Unicode lookalike characters
+     *
+     * Replaces each Latin letter with its small-caps equivalent when available
+     * (based on a predefined mapping). Characters without a mapping are left
+     * unchanged
+     *
+     * @param text the input text to transform (may contain any characters)
+     * @return a new string where mapped letters are replaced by small-caps
+     */
     public static String toSmallCaps(String text) {
         StringBuilder result = new StringBuilder();
 

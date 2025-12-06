@@ -12,8 +12,33 @@ import org.tropicalstudios.tropicalLibs.utils.ChatUtil;
 import org.tropicalstudios.tropicalLibs.utils.ItemUtil;
 import org.tropicalstudios.tropicalLibs.utils.NBTUtil;
 
+/**
+ * Base inventory click listener for menu interactions
+ *
+ * Handles clicks only for the active {@link org.tropicalstudios.tropicalLibs.builders.MenuBuilder}
+ * instance opened by the player. Reads item NBT keys {@code target} and {@code menu-action}
+ * to perform built‑in actions and then delegates to {@link #handleAction(InventoryClickEvent, Player, String, String)}
+ * for plugin‑specific behavior
+ *
+ * Supported built‑in actions (case‑insensitive):
+ * - {@code [close]} — closes the player's inventory
+ * - {@code [player] <command>} — runs a command as the player (replaces {@code {player}} with target)
+ * - {@code [console] <command>} — runs a command as console (replaces {@code {player}} with target)
+ * - {@code [broadcast] <message>} — broadcasts a message (replaces {@code {player}} with target)
+ * - {@code [message] <message>} — sends a private message to the player (replaces {@code {player}} with target)
+ */
 public abstract class MenuClick implements Listener {
 
+    /**
+     * Handle inventory clicks within the player's open menu
+     *
+     * Safely ignores clicks from non‑players, clicks outside the active menu inventory,
+     * and null/air items. Parses the clicked item's NBT to resolve {@code target} and
+     * {@code menu-action}, executes any built‑in action, and finally calls
+     * {@link #handleAction(InventoryClickEvent, Player, String, String)}.
+     *
+     * @param event the Bukkit inventory click event
+     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent event) {
 
@@ -65,5 +90,18 @@ public abstract class MenuClick implements Listener {
         handleAction(event, player, target, action);
     }
 
+    /**
+     * Implement to handle custom actions not covered by the built‑in set
+     *
+     * This method is invoked after any recognized built‑in action has been processed.
+     * The {@code action} string is the raw value of the {@code menu-action} NBT tag
+     * from the clicked item, and {@code target} is the value of the {@code target}
+     * NBT tag (may be an empty string)
+     *
+     * @param event  the original inventory click event (already cancelled)
+     * @param player the player who clicked
+     * @param target the resolved target string from item NBT
+     * @param action the raw action string from item NBT
+     */
     protected abstract void handleAction(InventoryClickEvent event, Player player, String target, String action);
 }

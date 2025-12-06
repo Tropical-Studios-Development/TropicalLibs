@@ -7,26 +7,58 @@ public class TimeUtil {
 
     /**
      * Gets individual date components for a specific timezone
+     *
      * @param timezone The timezone string
-     * @return Array containing [day, month, year]
+     * @return Array containing [day, month, year, hour, minutes, seconds]
      */
-    public static int[] getDate(String timezone) {
+    public static String getFormattedDate(String timezone) {
         try {
             ZoneId zoneId = ZoneId.of(timezone);
-            ZonedDateTime zonedDateTime = ZonedDateTime.now(zoneId);
+            ZonedDateTime zdt = ZonedDateTime.now(zoneId);
 
-            return new int[] {
-                    zonedDateTime.getDayOfMonth(),
-                    zonedDateTime.getMonthValue(),
-                    zonedDateTime.getYear()
-            };
+            // hh:mm:ss | dd.mm.yyyy
+            return String.format(
+                    "%02d:%02d:%02d | %02d/%02d/%04d",
+                    zdt.getHour(),
+                    zdt.getMinute(),
+                    zdt.getSecond(),
+                    zdt.getDayOfMonth(),
+                    zdt.getMonthValue(),
+                    zdt.getYear()
+            );
+
+        } catch (Exception e) {
+            return getFormattedDate("UTC");
+        }
+    }
+
+    /**
+     * Gets the current date in a specific timezone formatted as dd/mm/yyyy
+     *
+     * @param timezone The timezone ID (e.g., "UTC", "Europe/Paris")
+     * @return A formatted date string in the format dd/mm/yyyy
+     */
+    public static String getDate(String timezone) {
+        try {
+            ZoneId zoneId = ZoneId.of(timezone);
+            ZonedDateTime zdt = ZonedDateTime.now(zoneId);
+
+            return String.format(
+                    "%02d/%02d/%04d",
+                    zdt.getDayOfMonth(),
+                    zdt.getMonthValue(),
+                    zdt.getYear()
+            );
+
         } catch (Exception e) {
             return getDate("UTC");
         }
     }
 
+
     /**
      * Gets the year for a specific timezone
+     *
      * @param timezone The timezone string
      * @return The year (e.g., 2025)
      */
@@ -41,6 +73,7 @@ public class TimeUtil {
 
     /**
      * Gets the month for a specific timezone
+     *
      * @param timezone The timezone string
      * @return The month (1-12)
      */
@@ -55,6 +88,7 @@ public class TimeUtil {
 
     /**
      * Gets the day of the month for a specific timezone
+     *
      * @param timezone The timezone string
      * @return The day of the month (1-31)
      */
@@ -68,27 +102,32 @@ public class TimeUtil {
     }
 
     /**
-     * Gets individual time components for a specific timezone
-     * @param timezone The timezone string
-     * @return Array containing [hour, minute, second]
+     * Gets the current time in a specific timezone formatted as hh:mm:ss.
+     *
+     * @param timezone The timezone ID (e.g., "UTC", "Europe/London")
+     * @return A formatted time string in the format hh:mm:ss
      */
-    public static int[] getTime(String timezone) {
+    public static String getTime(String timezone) {
         try {
             ZoneId zoneId = ZoneId.of(timezone);
-            ZonedDateTime zonedDateTime = ZonedDateTime.now(zoneId);
+            ZonedDateTime zdt = ZonedDateTime.now(zoneId);
 
-            return new int[] {
-                    zonedDateTime.getHour(),
-                    zonedDateTime.getMinute(),
-                    zonedDateTime.getSecond()
-            };
+            return String.format(
+                    "%02d:%02d:%02d",
+                    zdt.getHour(),
+                    zdt.getMinute(),
+                    zdt.getSecond()
+            );
+
         } catch (Exception e) {
             return getTime("UTC");
         }
     }
 
+
     /**
      * Gets the hour for a specific timezone (24-hour format)
+     *
      * @param timezone The timezone string
      * @return The hour (0-23)
      */
@@ -103,6 +142,7 @@ public class TimeUtil {
 
     /**
      * Gets the minute for a specific timezone
+     *
      * @param timezone The timezone string
      * @return The minute (0-59)
      */
@@ -117,6 +157,7 @@ public class TimeUtil {
 
     /**
      * Gets the second for a specific timezone
+     *
      * @param timezone The timezone string
      * @return The second (0-59)
      */
@@ -131,6 +172,7 @@ public class TimeUtil {
 
     /**
      * Utility method to check if a timezone is valid
+     *
      * @param timezone The timezone string to validate
      * @return true if the timezone is valid, false otherwise
      */

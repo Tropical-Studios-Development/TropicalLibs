@@ -42,10 +42,6 @@ public class VersionUtil {
         return current;
     }
 
-    public static int getSubversion() {
-        return subversion;
-    }
-
     public static String getFullVersion() {
         return serverVersion;
     }
@@ -54,22 +50,38 @@ public class VersionUtil {
     // Comparison Helper Methods
     // ---------------------------------------------------------------------
 
-    // Does the current Minecraft version equal the given version?
+    /**
+     * Check if the current Minecraft version equals the given version
+     *
+     * @param version The version to compare to
+     */
     public static boolean equals(V version) {
         return current == version;
     }
 
-    // Is the current Minecraft version older than the given version?
+    /**
+     * Check if the current Minecraft version is older than the given version
+     *
+     * @param other The version to compare to
+     */
     public static boolean olderThan(V other) {
         return current.getMinor() < other.getMinor();
     }
 
-    // Is the current Minecraft version newer than the given version?
+    /**
+     * Check if the current Minecraft version is newer than the given version
+     *
+     * @param other The version to compare to
+     */
     public static boolean newerThan(V other) {
         return current.getMinor() > other.getMinor();
     }
 
-    // Is the current Minecraft version at equals or newer than the given version?
+    /**
+     * Check if the current Minecraft version equals or is newer than the given version
+     *
+     * @param other The version to compare to
+     */
     public static boolean atLeast(V other) {
         return current.getMinor() >= other.getMinor();
     }
@@ -78,7 +90,11 @@ public class VersionUtil {
     // Feature Support Helper
     // ---------------------------------------------------------------------
 
-    // Check if a version supports a feature
+    /**
+     * Check if the current server version supports a specific feature
+     *
+     * @param feature The feature to test
+     */
     public static boolean supportsFeature(Feature feature) {
         return atLeast(feature.getSince());
     }

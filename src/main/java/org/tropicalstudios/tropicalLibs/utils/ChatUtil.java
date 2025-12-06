@@ -29,7 +29,16 @@ public class ChatUtil {
     private static final MiniMessage MINI = MiniMessage.miniMessage();
     private static final Pattern HEX_PATTERN = Pattern.compile("&(#[A-Fa-f0-9]{6})");
 
-    // Color a message (Supports Legacy & MiniMessage)
+    /**
+     * Colorize a message, supporting both Legacy color codes and MiniMessage tags.
+     *
+     * Replaces the "%prefix%" placeholder with the calling plugin's prefix.
+     * If MiniMessage tags are detected, deserializes via MiniMessage and
+     * re-serializes to legacy section codes; otherwise uses legacy translation
+     *
+     * @param message the raw message (may contain legacy codes or MiniMessage tags)
+     * @return the colorized message string (legacy section codes), or empty string if input is null
+     */
     public static String c(String message) {
         if (message == null)
             return "";
@@ -43,7 +52,12 @@ public class ChatUtil {
         return ChatColor.translateAlternateColorCodes('&', format(message));
     }
 
-    // Color a list of messages
+    /**
+     * Colorize a list of messages using {@link #c(String)} for each entry
+     *
+     * @param messages the list of raw messages
+     * @return a new list containing colorized messages
+     */
     public static List<String> c(List<String> messages) {
         List<String> coloredMessages = new ArrayList<>();
         for (String s : messages)
@@ -52,7 +66,12 @@ public class ChatUtil {
         return coloredMessages;
     }
 
-    // Format component for MiniMessage
+    /**
+     * Deserialize a MiniMessage string into an Adventure Component
+     *
+     * @param message MiniMessage-formatted text
+     * @return the deserialized component, or an empty component if input is null
+     */
     public static Component mm(String message) {
         if (message == null)
             return Component.empty();
@@ -60,16 +79,28 @@ public class ChatUtil {
         return MINI.deserialize(message);
     }
 
-    // Check if string contains MiniMessage tags
+    /**
+     * Heuristically detect if a string likely contains MiniMessage tags
+     *
+     * @param message the text to inspect
+     * @return true if angle brackets are present, suggesting MiniMessage tags
+     */
     private static boolean containsMiniMessageTags(String message) {
         return message.contains("<") && message.contains(">");
     }
 
-    // Format HEX color codes
+    /**
+     * Apply HEX color formatting for legacy strings when supported by the server version
+     *
+     * Replaces "%prefix%" placeholder and converts occurrences of patterns like "&#RRGGBB"
+     * to the appropriate legacy representation when HEX colors are available
+     *
+     * @param string the input string (may be null)
+     * @return the formatted string with HEX colors applied when supported
+     */
     private static String format(String string) {
-        if (string == null) {
+        if (string == null)
             return "";
-        }
 
         string = string.replace("%prefix%", PluginUtil.getPluginPrefix());
         Matcher matcher = HEX_PATTERN.matcher(string);
@@ -91,9 +122,9 @@ public class ChatUtil {
      */
     public static String beautifyName(String message, String separator) {
         if (message != null && !message.isEmpty()) {
-            if (!message.contains(separator)) {
+            if (!message.contains(separator))
                 return Character.toUpperCase(message.charAt(0)) + message.substring(1).toLowerCase();
-            } else {
+            else {
                 String[] words = message.split(separator);
                 StringBuilder result = new StringBuilder();
 
@@ -101,17 +132,15 @@ public class ChatUtil {
                     String word = words[i];
                     if (!word.isEmpty()) {
                         result.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1).toLowerCase());
-                        if (i < words.length - 1) {
+                        if (i < words.length - 1)
                             result.append(" ");
-                        }
                     }
                 }
 
                 return result.toString();
             }
-        } else {
+        } else
             return message;
-        }
     }
 
     /**
@@ -135,13 +164,21 @@ public class ChatUtil {
             player.performCommand(cmd);
     }
 
-    // Execute a console command
+    /**
+     * Execute a single command as the console sender
+     *
+     * @param command the command to dispatch
+     */
     public static void executeConsoleCommand(String command) {
         ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
         Bukkit.dispatchCommand(console, command);
     }
 
-    // Execute multiple console commands
+    /**
+     * Execute multiple commands as the console sender
+     *
+     * @param commands the list of commands to dispatch in order
+     */
     public static void executeConsoleCommand(List<String> commands) {
         ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
         for (String cmd : commands)
@@ -242,19 +279,46 @@ public class ChatUtil {
         player.sendMessage(formattedMessage);
     }
 
-    // Send toast to player
+    /**
+     * Send a toast notification to a player with default icon and style
+     *
+     * @param receiver the player to receive the toast
+     * @param message  the toast text
+     */
     public static void sendToast(Player receiver, String message) {
         sendToast(receiver, message, Material.BOOK, ToastStyle.TASK);
     }
 
+    /**
+     * Send a toast notification to a player with a custom style and default icon
+     *
+     * @param receiver  the player to receive the toast
+     * @param message   the toast text
+     * @param toastStyle the visual style of the toast
+     */
     public static void sendToast(Player receiver, String message, ToastStyle toastStyle) {
         sendToast(receiver, message, Material.BOOK, toastStyle);
     }
 
+    /**
+     * Send a toast notification to a player with a custom icon and default style
+     *
+     * @param receiver the player to receive the toast
+     * @param message  the toast text
+     * @param icon     the item icon to display
+     */
     public static void sendToast(Player receiver, String message, Material icon) {
         sendToast(receiver, message, icon, ToastStyle.TASK);
     }
 
+    /**
+     * Send a toast notification to a player with a custom icon and style
+     *
+     * @param player  the player to receive the toast
+     * @param message the toast text
+     * @param icon    the item icon to display
+     * @param style   the visual style of the toast
+     */
     public static void sendToast(Player player, String message, Material icon, ToastStyle style) {
         (new AdvancementAccessor(message, icon.toString().toLowerCase(), style)).show(player);
     }

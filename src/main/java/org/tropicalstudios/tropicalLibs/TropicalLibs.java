@@ -3,102 +3,43 @@ package org.tropicalstudios.tropicalLibs;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.tropicalstudios.tropicalLibs.utils.PluginUtil;
 
 public final class TropicalLibs extends JavaPlugin {
 
     private static TropicalLibs self;
     private static BukkitAudiences audiences;
-    private static final Map<String, Plugin> pluginInstances = new HashMap<>();
-    private static final Map<String, String> pluginNames = new HashMap<>();
 
     @Override
     public void onEnable() {
         self = this;
         audiences = BukkitAudiences.create(this);
-        Messenger.log(Messenger.LogLevel.INFO, "Successfully enabled!");
+        Messenger.log(Messenger.LogLevel.SUCCESS, "Successfully enabled!");
     }
 
     @Override
     public void onDisable() {
         if (audiences != null)
             audiences.close();
-        Messenger.log(Messenger.LogLevel.INFO, "Successfully disabled!");
+
+        Messenger.log(Messenger.LogLevel.SUCCESS, "Successfully disabled!");
+    }
+
+    /**
+     * Resolves the plugin instance that invoked the current call
+     *
+     * Attempts to detect the caller's plugin using {@link PluginUtil#resolveCallerPlugin()}
+     * If the caller cannot be identified (e.g., reflection or non-plugin source),
+     * this method falls back to returning the TropicalLibs plugin instance
+     *
+     * @return The calling plugin instance, or TropicalLibs itself if resolution fails
+     */
+    public static Plugin getINSTANCE() {
+        Plugin plugin = PluginUtil.resolveCallerPlugin();
+        return plugin != null ? plugin : TropicalLibs.self;
     }
 
     public static BukkitAudiences getAudiences() {
         return audiences;
-    }
-
-    public static Plugin getINSTANCE() {
-        String callerClassName = getCallerClassName();
-        Plugin plugin = (callerClassName != null) ? pluginInstances.get(callerClassName) : null;
-
-        // If detection failed, fall back to TropicalLibs plugin itself
-        if (plugin == null)
-            return TropicalLibs.self;
-
-        return plugin;
-    }
-
-    public static String getPluginName() {
-        String callerClassName = getCallerClassName();
-        String name = (callerClassName != null) ? pluginNames.get(callerClassName) : null;
-
-        // Fallback to TropicalLibs if detection fails
-        if (name == null)
-            return TropicalLibs.self.getName();
-
-        return name;
-    }
-
-    public static void registerPlugin(String pluginClassName, Plugin plugin) {
-        pluginInstances.put(pluginClassName, plugin);
-        pluginNames.put(pluginClassName, plugin.getName());
-    }
-
-    private static String getCallerClassName() {
-        StackTraceElement[] stack = Thread.currentThread().getStackTrace();
-        for (int i = 4; i < stack.length; i++) {
-            String className = stack[i].getClassName();
-
-            if (!className.startsWith("org.tropicalstudios.tropicalLibs")) {
-                String pluginMainClass = getPluginMainClass(className);
-                if (pluginMainClass != null && pluginInstances.containsKey(pluginMainClass))
-                    return pluginMainClass;
-            }
-        }
-
-        return null;
-    }
-
-    private static String getPluginMainClass(String className) {
-        try {
-            if (pluginInstances.containsKey(className))
-                return className;
-
-
-            Class<?> clazz = Class.forName(className);
-            if (JavaPlugin.class.isAssignableFrom(clazz))
-                return className;
-
-
-            String packageName = clazz.getPackage().getName();
-            for (String registeredClassName : pluginInstances.keySet()) {
-                try {
-                    Class<?> registeredClass = Class.forName(registeredClassName);
-                    String registeredPackage = registeredClass.getPackage().getName();
-                    if (packageName.startsWith(registeredPackage))
-                        return registeredClassName;
-
-                } catch (Exception ignored) {}
-            }
-
-            return null;
-        } catch (Exception e) {
-            return null;
-        }
     }
 }

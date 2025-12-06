@@ -38,7 +38,11 @@ public class BlockUtil {
         return newDrops;
     }
 
-    // Get the xp according to the broken block
+    /**
+     * Get the xp according to the broken block
+     *
+     * @param material The material of the broken block to evaluate for XP drops
+     */
     public static int getExpFromBlock(Material material) {
         return switch (material) {
             case COAL_ORE, NETHER_GOLD_ORE -> 1;
@@ -49,18 +53,30 @@ public class BlockUtil {
         };
     }
 
-    // Check if a block is null or air
+    /**
+     * Check if a block is null or air
+     *
+     * @param block The block to check for null or air
+     */
     public static boolean isNull(Block block) {
         return block == null || block.getType() == Material.AIR;
 
     }
 
-    // Check if the material is an ore
+    /**
+     * Check if the material is an ore
+     *
+     * @param material The material to test
+     */
     public static boolean isOre(Material material) {
         return material.name().endsWith("_ORE") || material == Material.NETHER_QUARTZ_ORE;
     }
 
-    // Check if the material is a log
+    /**
+     * Check if the material is a log
+     *
+     * @param material The material to test
+     */
     public static boolean isLog(Material material) {
         return material == Material.OAK_LOG ||
                 material == Material.SPRUCE_LOG ||
@@ -84,7 +100,12 @@ public class BlockUtil {
                 material == Material.STRIPPED_WARPED_STEM;
     }
 
-    // Get the adjacent blocks of a block
+    /**
+     * Get the adjacent blocks of a block
+     *
+     * @param block The center block
+     * @return list of adjacent blocks in order: NORTH, EAST, SOUTH, WEST, UP, DOWN
+     */
     public static List<Block> getAdjacentBlocks(Block block) {
         List<Block> adjacentBlocks = new ArrayList<>();
         adjacentBlocks.add(block.getRelative(BlockFace.NORTH));

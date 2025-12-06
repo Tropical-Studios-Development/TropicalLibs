@@ -22,10 +22,10 @@ import java.util.List;
 public class RegionUtil {
 
     /**
-     * Remove all blocks in a chunk
+     * Remove all blocks in the chunk at the given location.
      *
-     * @param location       The location where the chunk is
-     * @param limit          Should it keep the last layer of the chunk (bedrock)
+     * @param location the location within the target chunk
+     * @param limit    whether to keep the lowest layer (bedrock)
      */
     public static void removeChunk(Location location, boolean limit) {
         TropicalScheduler.async().run(() -> {
@@ -42,7 +42,6 @@ public class RegionUtil {
 
             for (int x = startX; x < startX + 16; x++) {
                 for (int z = startZ; z < startZ + 16; z++) {
-
                     for (int y = minY; y < maxY; y++) {
                         Block block = world.getBlockAt(x, y, z);
                         toClear.add(block);
@@ -51,14 +50,18 @@ public class RegionUtil {
             }
 
             TropicalScheduler.sync().run(() -> {
-                for (Block block : toClear) {
+                for (Block block : toClear)
                     block.setType(Material.AIR, false);
-                }
             });
         });
     }
 
-    // Regenerate a chunk
+    /**
+     * Regenerate the chunk at the given location by unloading, deleting its region file entry,
+     * and forcing the server to load it again
+     *
+     * @param location the location within the chunk to regenerate
+     */
     public static void regenerateChunk(Location location) {
         World world = location.getWorld();
         Chunk chunk = location.getChunk();
@@ -71,11 +74,17 @@ public class RegionUtil {
         world.getChunkAt(cx, cz, true);
     }
 
-    // Delete the chunk from the world folder
+    /**
+     * Delete the target chunk's data from disk by removing its entry from the corresponding
+     * region file (32x32 chunks per file)
+     *
+     * @param world  the world containing the chunk
+     * @param chunkX the chunk X coordinate
+     * @param chunkZ the chunk Z coordinate
+     */
     private static void deleteChunkFromDisk(World world, int chunkX, int chunkZ) {
         File worldFolder = world.getWorldFolder();
 
-        // Region coordinates (32x32 chunks per file)
         int regionX = chunkX >> 5;
         int regionZ = chunkZ >> 5;
 
@@ -84,19 +93,17 @@ public class RegionUtil {
                 "region" + File.separator + "r." + regionX + "." + regionZ + ".mca"
         );
 
-        if (regionFile.exists()) {
+        if (regionFile.exists())
             regionFile.delete();
-        }
     }
 
     /**
-     * Check if the location is protected (WorldGuard)
+     * Check whether a location is protected for a given player (WorldGuard)
      *
-     * @param player        The player that should be checked
-     * @param location      The location that should be checked
+     * @param player   the player to test permissions for
+     * @param location the location to check
      */
     public static boolean isLocationProtected(Player player, Location location) {
-
         if (WorldEditAllow.isPluginEnabled())
             return WorldEditAllow.isLocationProtected(player, location);
 
@@ -104,10 +111,10 @@ public class RegionUtil {
     }
 
     /**
-     * Check if a player is in a region
+     * Check whether a player is inside a WorldGuard region by name
      *
-     * @param player        The player that should be checked
-     * @param regionName    The region that should be checked
+     * @param player     the player to check
+     * @param regionName the region identifier (case-insensitive)
      */
     public static boolean isInRegion(Player player, String regionName) {
         if (WorldEditAllow.isPluginEnabled())
@@ -118,16 +125,26 @@ public class RegionUtil {
 
     private static class WorldEditAllow {
 
-        // Check if WorldGuard is enabled
+        /**
+         * Determine whether the WorldGuard plugin is installed and enabled
+         *
+         * @return true if WorldGuard is available, false otherwise
+         */
         private static boolean isPluginEnabled() {
             return Bukkit.getServer().getPluginManager().getPlugin("WorldGuard") != null;
         }
 
+        /**
+         * Test whether the given location is protected against the specified player's actions
+         * Uses WorldGuard region state and the BLOCK_BREAK flag as a proxy for protection
+         *
+         * @param player          the player to test
+         * @param defaultLocation the location to check
+         */
         private static boolean isLocationProtected(Player player, Location defaultLocation) {
             com.sk89q.worldedit.util.Location location = BukkitAdapter.adapt(defaultLocation);
             LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
             RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-
             if (container == null)
                 return false;
 
@@ -139,25 +156,27 @@ public class RegionUtil {
             return !result;
         }
 
+        /**
+         * Determine whether a player is located within a specific WorldGuard region
+         *
+         * @param player     the player to check
+         * @param regionName the region identifier (case-insensitive)
+         */
         private static boolean isInRegion(Player player, String regionName) {
             RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-
             if (container == null)
                 return false;
 
             RegionManager regionManager = container.get(BukkitAdapter.adapt(player.getWorld()));
-
             if (regionManager == null)
                 return false;
 
             com.sk89q.worldedit.util.Location location = BukkitAdapter.adapt(player.getLocation());
             ApplicableRegionSet regions = container.createQuery().getApplicableRegions(location);
 
-            for (ProtectedRegion region : regions) {
-                if (region.getId().equalsIgnoreCase(regionName)) {
+            for (ProtectedRegion region : regions)
+                if (region.getId().equalsIgnoreCase(regionName))
                     return true;
-                }
-            }
 
             return false;
         }
